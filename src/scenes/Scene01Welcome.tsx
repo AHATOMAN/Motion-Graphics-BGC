@@ -3,26 +3,16 @@ import { AbsoluteFill, interpolate, useCurrentFrame } from "remotion";
 import { COLORS, DISPLAY } from "../theme";
 import { GlobalLogo } from "../branding/GlobalLogo";
 import { BGCLogo } from "../branding/BGCLogo";
-import { SubtitleBar, SubtitleChunk } from "../components/SubtitleBar";
+import { SubtitleBar } from "../components/SubtitleBar";
+import { SUBTITLES } from "../data/subtitles";
 import { FadeUp, Pop, EASE } from "../components/anim";
 import { KineticText } from "../components/KineticText";
 import { VoiceOver } from "../components/VoiceOver";
+import { Globe3D } from "../components/Globe3D";
 
 export const SCENE_01_SECONDS = 17;
 
-const chunks: SubtitleChunk[] = [
-  {
-    from: 0.5,
-    to: 5.5,
-    text: "Welcome to Global Chemicals & Maintenance Systems LLC — Al Barami Group of Companies.",
-  },
-  {
-    from: 5.5,
-    to: 11.5,
-    text: "Today, we'll introduce you to the key safety guidelines and best practices to keep you safe while working with us.",
-  },
-  { from: 11.5, to: 15.6, text: "Safety is everyone's responsibility." },
-];
+const chunks = SUBTITLES["scene-01"];
 
 export const Scene01Welcome: React.FC = () => {
   const frame = useCurrentFrame();
@@ -79,16 +69,16 @@ export const Scene01Welcome: React.FC = () => {
         style={{
           alignItems: "center",
           justifyContent: "center",
-          gap: 64,
-          paddingBottom: 120,
+          gap: 40,
+          paddingBottom: 110,
         }}
       >
         <Pop delay={5}>
-          <GlobalLogo height={130} showNames />
+          <GlobalLogo height={120} showNames />
         </Pop>
-        <div style={{ display: "flex", alignItems: "center", gap: 100 }}>
-          <Pop delay={22}>
-            <BGCLogo height={170} />
+        <div style={{ display: "flex", alignItems: "center", gap: 40 }}>
+          <Pop delay={16}>
+            <Globe3D size={480} />
           </Pop>
           <FadeUp delay={38}>
             <div style={{ maxWidth: 940 }}>
@@ -116,6 +106,9 @@ export const Scene01Welcome: React.FC = () => {
                   color: COLORS.brandRed,
                 }}
               />
+              <FadeUp delay={70} style={{ marginTop: 34 }}>
+                <BGCLogo height={130} />
+              </FadeUp>
             </div>
           </FadeUp>
         </div>

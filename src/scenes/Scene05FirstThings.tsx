@@ -1,35 +1,15 @@
 import React from "react";
 import { COLORS, FONT } from "../theme";
 import { SceneFrame, ContentArea } from "../components/SceneFrame";
-import { SubtitleBar, SubtitleChunk } from "../components/SubtitleBar";
+import { SubtitleBar } from "../components/SubtitleBar";
+import { SUBTITLES } from "../data/subtitles";
 import { Pop } from "../components/anim";
 import { IconCard } from "../components/Card";
 import { VoiceOver } from "../components/VoiceOver";
 
 export const SCENE_05_SECONDS = 26;
 
-const chunks: SubtitleChunk[] = [
-  {
-    from: 0.6,
-    to: 5.5,
-    text: "Here are a few simple rules to get your visit starting off right.",
-  },
-  {
-    from: 5.5,
-    to: 11,
-    text: "Please ensure that your visitor pass is visible at all times, and return it when you leave.",
-  },
-  {
-    from: 11,
-    to: 18,
-    text: "Your safety is your responsibility, and our host will assist you — please feel free to ask them any questions.",
-  },
-  {
-    from: 18,
-    to: 24.5,
-    text: "To protect company property, assets and privacy, photographs and video can only be taken with prior approval.",
-  },
-];
+const chunks = SUBTITLES["scene-05"];
 
 const PassIcon = (
   <svg viewBox="0 0 120 120" width={110} height={110}>
@@ -66,28 +46,25 @@ export const Scene05FirstThings: React.FC = () => {
   return (
     <SceneFrame kicker="Starting off right" title="First Things First!">
       <ContentArea top={310} style={{ gap: 50 }}>
-        <Pop delay={5.5 * fps}>
+        <Pop delay={4.6 * fps}>
           <IconCard
             icon={PassIcon}
             label="Visitor Pass"
             sub="Visible at all times — return it when you leave"
-            width={420}
           />
         </Pop>
-        <Pop delay={11 * fps}>
+        <Pop delay={10.3 * fps}>
           <IconCard
             icon={HostIcon}
             label="Your Host Assists You"
             sub="Ask them any questions — anytime"
-            width={420}
           />
         </Pop>
-        <Pop delay={18 * fps}>
+        <Pop delay={17.6 * fps}>
           <IconCard
             icon={NoPhotoIcon}
             label="No Photos or Video"
             sub="Only with prior approval"
-            width={420}
           />
         </Pop>
       </ContentArea>

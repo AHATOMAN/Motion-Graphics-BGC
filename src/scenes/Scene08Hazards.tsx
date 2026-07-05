@@ -1,25 +1,15 @@
 import React from "react";
 import { COLORS } from "../theme";
 import { SceneFrame, ContentArea } from "../components/SceneFrame";
-import { SubtitleBar, SubtitleChunk } from "../components/SubtitleBar";
+import { SubtitleBar } from "../components/SubtitleBar";
+import { SUBTITLES } from "../data/subtitles";
 import { Pop, FadeUp } from "../components/anim";
 import { IconCard, BannerText } from "../components/Card";
 import { VoiceOver } from "../components/VoiceOver";
 
 export const SCENE_08_SECONDS = 13;
 
-const chunks: SubtitleChunk[] = [
-  {
-    from: 0.6,
-    to: 4.5,
-    text: "Identifying hazards is the first step in preventing accidents.",
-  },
-  {
-    from: 4.5,
-    to: 8,
-    text: "Always be alert about potential risks in your work area.",
-  },
-];
+const chunks = SUBTITLES["scene-08"];
 
 const WarnTriangle: React.FC<{ children: React.ReactNode }> = ({ children }) => (
   <svg viewBox="0 0 120 120" width={120} height={120}>
@@ -76,13 +66,13 @@ export const Scene08Hazards: React.FC = () => {
       <ContentArea top={300} style={{ flexDirection: "column", gap: 56 }}>
         <div style={{ display: "flex", gap: 44 }}>
           <Pop delay={1.5 * fps}>
-            <IconCard icon={SlipIcon} label="Slippery Floors" sub="Spills & wet surfaces" width={380} />
+            <IconCard icon={SlipIcon} label="Slippery Floors" sub="Spills & wet surfaces" />
           </Pop>
           <Pop delay={2.5 * fps}>
-            <IconCard icon={MachineIcon} label="Moving Machinery" sub="Rotating & moving parts" width={380} />
+            <IconCard icon={MachineIcon} label="Moving Machinery" sub="Rotating & moving parts" />
           </Pop>
           <Pop delay={3.5 * fps}>
-            <IconCard icon={ElectricIcon} label="Electrical Wiring" sub="Live cables & panels" width={380} />
+            <IconCard icon={ElectricIcon} label="Electrical Wiring" sub="Live cables & panels" />
           </Pop>
         </div>
         <FadeUp delay={8.2 * fps}>

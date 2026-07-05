@@ -1,30 +1,15 @@
 import React from "react";
 import { COLORS, FONT } from "../theme";
 import { SceneFrame, ContentArea } from "../components/SceneFrame";
-import { SubtitleBar, SubtitleChunk } from "../components/SubtitleBar";
+import { SubtitleBar } from "../components/SubtitleBar";
+import { SUBTITLES } from "../data/subtitles";
 import { Pop, FadeUp } from "../components/anim";
 import { Avatar, AvatarKind } from "../components/People";
 import { VoiceOver } from "../components/VoiceOver";
 
 export const SCENE_04_SECONDS = 20;
 
-const chunks: SubtitleChunk[] = [
-  {
-    from: 0.6,
-    to: 7,
-    text: "Before we go any further — you're our top priority, and safety is our first priority in our daily working hours.",
-  },
-  {
-    from: 7,
-    to: 13,
-    text: "Whether you're a visitor, a contractor, an industry vendor, or on your first job —",
-  },
-  {
-    from: 13,
-    to: 18.8,
-    text: "it is important that everyone has the knowledge to make the right decisions to stay safe.",
-  },
-];
+const chunks = SUBTITLES["scene-04"];
 
 const ROLES: { kind: AvatarKind; label: string }[] = [
   { kind: "visitor", label: "Visitor" },
@@ -40,7 +25,7 @@ export const Scene04Priority: React.FC = () => {
       <ContentArea top={300} style={{ flexDirection: "column", gap: 60 }}>
         <div style={{ display: "flex", gap: 70 }}>
           {ROLES.map((r, i) => (
-            <Pop key={r.kind} delay={7 * fps + i * 14}>
+            <Pop key={r.kind} delay={5.6 * fps + i * 27}>
               <div
                 style={{
                   display: "flex",
@@ -64,7 +49,7 @@ export const Scene04Priority: React.FC = () => {
             </Pop>
           ))}
         </div>
-        <FadeUp delay={13.5 * fps}>
+        <FadeUp delay={14.3 * fps}>
           <div
             style={{
               fontFamily: FONT,

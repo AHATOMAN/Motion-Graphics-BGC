@@ -2,26 +2,22 @@ import React from "react";
 import { AbsoluteFill, interpolate, useCurrentFrame } from "remotion";
 import { COLORS, DISPLAY } from "../theme";
 import { KineticText } from "../components/KineticText";
-import { SubtitleBar, SubtitleChunk } from "../components/SubtitleBar";
+import { SubtitleBar } from "../components/SubtitleBar";
+import { SUBTITLES } from "../data/subtitles";
 import { FadeUp, Pop, EASE } from "../components/anim";
 import { Avatar } from "../components/People";
 import { VoiceOver } from "../components/VoiceOver";
 import { GlobalLogo } from "../branding/GlobalLogo";
+import { Globe3D } from "../components/Globe3D";
 
 export const SCENE_12_SECONDS = 10;
 
-const chunks: SubtitleChunk[] = [
-  {
-    from: 0.6,
-    to: 5.8,
-    text: "Safety is a team effort. Let's work together to ensure everyone stays safe on the job.",
-  },
-];
+const chunks = SUBTITLES["scene-12"];
 
 export const Scene12Closing: React.FC = () => {
   const frame = useCurrentFrame();
   const fps = 30;
-  const bannerScale = interpolate(frame, [6 * fps, 6 * fps + 20], [0, 1], {
+  const bannerScale = interpolate(frame, [6.2 * fps, 6.2 * fps + 20], [0, 1], {
     extrapolateLeft: "clamp",
     extrapolateRight: "clamp",
     easing: EASE,
@@ -44,6 +40,17 @@ export const Scene12Closing: React.FC = () => {
         }}
       >
         <GlobalLogo height={52} inverted />
+      </div>
+      {/* 3D brand globe drifting in the background */}
+      <div
+        style={{
+          position: "absolute",
+          right: -110,
+          bottom: -90,
+          opacity: 0.45,
+        }}
+      >
+        <Globe3D size={520} />
       </div>
       {/* soft shapes */}
       <div

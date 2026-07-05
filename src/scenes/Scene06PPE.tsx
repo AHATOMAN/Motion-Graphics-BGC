@@ -2,7 +2,8 @@ import React from "react";
 import { interpolate, useCurrentFrame } from "remotion";
 import { COLORS, FONT } from "../theme";
 import { SceneFrame, ContentArea } from "../components/SceneFrame";
-import { SubtitleBar, SubtitleChunk } from "../components/SubtitleBar";
+import { SubtitleBar } from "../components/SubtitleBar";
+import { SUBTITLES } from "../data/subtitles";
 import { FadeUp } from "../components/anim";
 import { BannerText } from "../components/Card";
 import { PPEWorker } from "../components/People";
@@ -10,18 +11,7 @@ import { VoiceOver } from "../components/VoiceOver";
 
 export const SCENE_06_SECONDS = 15;
 
-const chunks: SubtitleChunk[] = [
-  {
-    from: 0.6,
-    to: 6,
-    text: "Before you start, it's essential to wear the correct Personal Protective Equipment, or PPE.",
-  },
-  {
-    from: 6,
-    to: 9.3,
-    text: "Your safety gear will help protect you from potential hazards.",
-  },
-];
+const chunks = SUBTITLES["scene-06"];
 
 const ITEMS: { key: "hat" | "goggles" | "vest" | "gloves" | "boots"; label: string; at: number }[] = [
   { key: "hat", label: "Hard Hat", at: 2.5 },
@@ -103,7 +93,7 @@ export const Scene06PPE: React.FC = () => {
               </div>
             );
           })}
-          <FadeUp delay={9.5 * fps} style={{ marginTop: 30 }}>
+          <FadeUp delay={9.8 * fps} style={{ marginTop: 30 }}>
             <BannerText tone="positive" text="Always check your PPE before starting work." />
           </FadeUp>
         </div>

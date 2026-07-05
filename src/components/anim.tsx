@@ -52,7 +52,8 @@ export const FadeUp: React.FC<{
   return <div style={{ opacity, translate, ...style }}>{children}</div>;
 };
 
-// Wraps children in a div that pops in with spring physics.
+// Wraps children in a div that pops in with spring physics and a
+// perspective tilt for dimensional depth.
 export const Pop: React.FC<{
   delay?: number;
   style?: React.CSSProperties;
@@ -61,5 +62,22 @@ export const Pop: React.FC<{
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
   const { opacity, scale } = popIn(frame, fps, delay);
-  return <div style={{ opacity, scale: String(scale), ...style }}>{children}</div>;
+  const t = spring({
+    frame: frame - delay,
+    fps,
+    config: { damping: 16, mass: 0.6, stiffness: 120 },
+  });
+  return (
+    <div
+      style={{
+        opacity,
+        scale: String(scale),
+        transform: `perspective(1100px) rotateX(${(1 - t) * 26}deg)`,
+        transformOrigin: "50% 85%",
+        ...style,
+      }}
+    >
+      {children}
+    </div>
+  );
 };

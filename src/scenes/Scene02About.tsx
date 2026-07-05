@@ -1,49 +1,14 @@
 import React from "react";
 import { COLORS, FONT } from "../theme";
 import { SceneFrame, ContentArea } from "../components/SceneFrame";
-import { SubtitleBar, SubtitleChunk } from "../components/SubtitleBar";
+import { SubtitleBar } from "../components/SubtitleBar";
+import { SUBTITLES } from "../data/subtitles";
 import { FadeUp, Pop } from "../components/anim";
 import { VoiceOver } from "../components/VoiceOver";
 
 export const SCENE_02_SECONDS = 65;
 
-const chunks: SubtitleChunk[] = [
-  {
-    from: 0.6,
-    to: 8.5,
-    text: "Over the last four decades, GCMS has been actively associated with Power and Water & Wastewater industries — life's most essentials in the Sultanate of Oman.",
-  },
-  {
-    from: 8.5,
-    to: 17.5,
-    text: "Established in 1963, and becoming a 100% Omani company in 1976, it became a member of the Al Barami Group of Companies.",
-  },
-  {
-    from: 17.5,
-    to: 30,
-    text: "GCMS handles the entire project lifecycle — BOOT (Build, Own, Operate & Transfer), Engineering, Procurement, Construction, Testing, Commissioning, Operation & Maintenance, and Facilities Management —",
-  },
-  {
-    from: 30,
-    to: 37,
-    text: "across Power, Water & Wastewater and Renewable Energy.",
-  },
-  {
-    from: 37,
-    to: 45,
-    text: "GCMS currently has a workforce of 1,500+ spread across all regions of the Sultanate of Oman.",
-  },
-  {
-    from: 45,
-    to: 55,
-    text: "GCMS is committed to being a leader in Quality, Health, Safety and Environmental Protection — with the utmost emphasis on the safety of its people and processes,",
-  },
-  {
-    from: 55,
-    to: 63.6,
-    text: "and the well-being of the communities and stakeholders.",
-  },
-];
+const chunks = SUBTITLES["scene-02"];
 
 const Milestone: React.FC<{ year: string; text: string }> = ({
   year,

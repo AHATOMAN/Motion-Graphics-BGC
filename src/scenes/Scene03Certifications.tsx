@@ -1,35 +1,15 @@
 import React from "react";
 import { COLORS, FONT } from "../theme";
 import { SceneFrame, ContentArea } from "../components/SceneFrame";
-import { SubtitleBar, SubtitleChunk } from "../components/SubtitleBar";
+import { SubtitleBar } from "../components/SubtitleBar";
+import { SUBTITLES } from "../data/subtitles";
 import { Pop } from "../components/anim";
 import { IconCard } from "../components/Card";
 import { VoiceOver } from "../components/VoiceOver";
 
 export const SCENE_03_SECONDS = 28;
 
-const chunks: SubtitleChunk[] = [
-  {
-    from: 0.6,
-    to: 7.2,
-    text: "GCMS is approved as a “Grade A” Electrical & Solar Contractor by the Distribution Code Review Panel (DCRP).",
-  },
-  {
-    from: 7.2,
-    to: 14,
-    text: "We are registered on the Joint Supplier Registration System (JSRS) for Oil & Gas, and GCMS is a member of OPAL.",
-  },
-  {
-    from: 14,
-    to: 20,
-    text: "GCMS is certified with the ISO QHSE Management Systems 9001, 14001 & 45001,",
-  },
-  {
-    from: 20,
-    to: 26,
-    text: "and is registered as “Excellent Grade” with the Tender Board.",
-  },
-];
+const chunks = SUBTITLES["scene-03"];
 
 const Rosette: React.FC<{ color: string; label: string }> = ({
   color,
@@ -93,13 +73,13 @@ const CERTS: { icon: React.ReactNode; label: string; sub: string }[] = [
 
 export const Scene03Certifications: React.FC = () => {
   const fps = 30;
-  const delays = [1.5, 7.5, 10.5, 14.5, 20.5];
+  const delays = [1.5, 7.3, 10.8, 14.3, 20.1];
   return (
     <SceneFrame kicker="Trusted & Accredited" title="Approvals & Certifications">
-      <ContentArea top={300} style={{ gap: 24 }}>
+      <ContentArea top={300} style={{ gap: 23 }}>
         {CERTS.map((c, i) => (
           <Pop key={c.label} delay={delays[i] * fps}>
-            <IconCard icon={c.icon} label={c.label} sub={c.sub} width={315} />
+            <IconCard icon={c.icon} label={c.label} sub={c.sub} />
           </Pop>
         ))}
       </ContentArea>

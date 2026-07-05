@@ -2,21 +2,15 @@ import React from "react";
 import { interpolate, useCurrentFrame } from "remotion";
 import { COLORS, FONT } from "../theme";
 import { SceneFrame, ContentArea } from "../components/SceneFrame";
-import { SubtitleBar, SubtitleChunk } from "../components/SubtitleBar";
+import { SubtitleBar } from "../components/SubtitleBar";
+import { SUBTITLES } from "../data/subtitles";
 import { FadeUp, Pop } from "../components/anim";
 import { BannerText } from "../components/Card";
 import { VoiceOver } from "../components/VoiceOver";
 
 export const SCENE_11_SECONDS = 13;
 
-const chunks: SubtitleChunk[] = [
-  { from: 0.6, to: 3.2, text: "Report any incidents or near-misses." },
-  {
-    from: 3.2,
-    to: 6.2,
-    text: "Reporting helps prevent future accidents.",
-  },
-];
+const chunks = SUBTITLES["scene-11"];
 
 // Worker spots a falling object (near miss) and reports to a supervisor.
 const NearMiss: React.FC = () => {
@@ -92,7 +86,7 @@ export const Scene11Reporting: React.FC = () => {
             maxWidth: 700,
           }}
         >
-          <Pop delay={3.6 * fps}>
+          <Pop delay={3.5 * fps}>
             <div
               style={{
                 fontFamily: FONT,
@@ -105,7 +99,7 @@ export const Scene11Reporting: React.FC = () => {
               Reporting today prevents the accident of tomorrow.
             </div>
           </Pop>
-          <FadeUp delay={6.2 * fps}>
+          <FadeUp delay={6.3 * fps}>
             <BannerText text="Near misses could have caused injury — report them!" />
           </FadeUp>
         </div>

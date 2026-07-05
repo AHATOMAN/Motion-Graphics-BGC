@@ -2,7 +2,8 @@ import React from "react";
 import { interpolate, useCurrentFrame } from "remotion";
 import { COLORS, FONT } from "../theme";
 import { SceneFrame } from "../components/SceneFrame";
-import { SubtitleBar, SubtitleChunk } from "../components/SubtitleBar";
+import { SubtitleBar } from "../components/SubtitleBar";
+import { RULE_TIMINGS, SUBTITLES } from "../data/subtitles";
 import { FadeUp } from "../components/anim";
 import { VoiceOver } from "../components/VoiceOver";
 
@@ -23,30 +24,7 @@ const RULES: { title: string; desc: string }[] = [
   { title: "PPE", desc: "Wear the correct PPE, always" },
 ];
 
-// Timed against the narration audio: the intro sentence runs ~12s and
-// each spoken rule takes ~6.1s.
-const INTRO = 12.5; // seconds before the first rule
-const PER_RULE = 6.1;
-
-const ruleChunks: SubtitleChunk[] = RULES.map((r, i) => ({
-  from: INTRO + i * PER_RULE,
-  to: INTRO + (i + 1) * PER_RULE,
-  text: `${i + 1}. ${r.title} — ${r.desc}.`,
-}));
-
-const chunks: SubtitleChunk[] = [
-  {
-    from: 0.6,
-    to: INTRO,
-    text: "The GCMS 12 Golden Life Saving Rules are concise commitment statements designed to ensure workers work safely — and return safely to their loved ones.",
-  },
-  ...ruleChunks,
-  {
-    from: INTRO + 12 * PER_RULE + 0.4,
-    to: 97.4,
-    text: "The pocketbook is distributed to every employee in their preferred language — English, Arabic, Hindi, Urdu and Bangla.",
-  },
-];
+const chunks = SUBTITLES["scene-10"];
 
 const RuleCard: React.FC<{ index: number; title: string; desc: string }> = ({
   index,
@@ -55,13 +33,17 @@ const RuleCard: React.FC<{ index: number; title: string; desc: string }> = ({
 }) => {
   const frame = useCurrentFrame();
   const fps = 30;
-  const start = (INTRO + index * PER_RULE) * fps;
+  // Exact narration timing of this rule's sentence (forced alignment).
+  const start = RULE_TIMINGS[index].from * fps;
   const t = interpolate(frame, [start, start + 16], [0, 1], {
     extrapolateLeft: "clamp",
     extrapolateRight: "clamp",
   });
-  // Highlight while this rule's subtitle is active
-  const end = (INTRO + (index + 1) * PER_RULE) * fps;
+  // Highlight until the narrator moves on to the next rule
+  const end =
+    (index < RULE_TIMINGS.length - 1
+      ? RULE_TIMINGS[index + 1].from
+      : RULE_TIMINGS[index].to) * fps;
   const active = frame >= start && frame < end;
 
   return (
@@ -156,7 +138,7 @@ export const Scene10GoldenRules: React.FC = () => {
         ))}
       </div>
       <FadeUp
-        delay={(INTRO + 12 * PER_RULE) * fps}
+        delay={RULE_TIMINGS[11].to * fps}
         style={{
           position: "absolute",
           bottom: 180,

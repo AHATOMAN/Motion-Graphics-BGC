@@ -1,21 +1,15 @@
 import React from "react";
 import { COLORS, FONT } from "../theme";
 import { SceneFrame, ContentArea } from "../components/SceneFrame";
-import { SubtitleBar, SubtitleChunk } from "../components/SubtitleBar";
+import { SubtitleBar } from "../components/SubtitleBar";
+import { SUBTITLES } from "../data/subtitles";
 import { Pop, FadeUp } from "../components/anim";
 import { BannerText } from "../components/Card";
 import { VoiceOver } from "../components/VoiceOver";
 
 export const SCENE_09_SECONDS = 11;
 
-const chunks: SubtitleChunk[] = [
-  { from: 0.6, to: 3.4, text: "Follow safe work practices at all times." },
-  {
-    from: 3.4,
-    to: 6.2,
-    text: "Always read signs and instructions carefully.",
-  },
-];
+const chunks = SUBTITLES["scene-09"];
 
 // Figure lifting a box the wrong way (bent back) or right way (squat).
 const Lifter: React.FC<{ good: boolean }> = ({ good }) => (
@@ -107,7 +101,7 @@ export const Scene09SafeWork: React.FC = () => {
             </div>
           </Pop>
         </div>
-        <FadeUp delay={6.4 * fps}>
+        <FadeUp delay={6.2 * fps}>
           <BannerText tone="positive" text="Lifting: Use your legs, not your back." />
         </FadeUp>
       </ContentArea>

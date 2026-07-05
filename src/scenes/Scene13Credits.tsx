@@ -1,7 +1,8 @@
 import React from "react";
 import { AbsoluteFill } from "remotion";
 import { COLORS, FONT } from "../theme";
-import { SubtitleBar, SubtitleChunk } from "../components/SubtitleBar";
+import { SubtitleBar } from "../components/SubtitleBar";
+import { SUBTITLES } from "../data/subtitles";
 import { FadeUp } from "../components/anim";
 import { VoiceOver } from "../components/VoiceOver";
 import { GlobalLogo } from "../branding/GlobalLogo";
@@ -10,19 +11,7 @@ import { QhseBadge } from "../branding/QhseBadge";
 
 export const SCENE_13_SECONDS = 12;
 
-const chunks: SubtitleChunk[] = [
-  {
-    from: 0.6,
-    to: 3.4,
-    text: "Thank you for completing your HSE induction.",
-  },
-  {
-    from: 3.4,
-    to: 7.6,
-    text: "For any questions or concerns about safety, please speak with your supervisor.",
-  },
-  { from: 7.6, to: 9.8, text: "Stay safe!" },
-];
+const chunks = SUBTITLES["scene-13"];
 
 export const Scene13Credits: React.FC = () => {
   return (

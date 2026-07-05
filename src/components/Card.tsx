@@ -2,35 +2,41 @@ import React from "react";
 import { COLORS, DISPLAY, FONT } from "../theme";
 import { KineticText } from "./KineticText";
 
+// Every tile in the video shares these exact dimensions.
+export const CARD_WIDTH = 325;
+export const CARD_HEIGHT = 400;
+
 // Clean corporate card with an icon slot, a label and an optional sub-line.
+// Fixed size so all tiles across scenes are identical.
 export const IconCard: React.FC<{
   icon: React.ReactNode;
   label: string;
   sub?: string;
-  width?: number;
   accent?: string;
-}> = ({ icon, label, sub, width = 330, accent = COLORS.brandRed }) => (
+}> = ({ icon, label, sub, accent = COLORS.brandRed }) => (
   <div
     style={{
-      width,
+      width: CARD_WIDTH,
+      height: CARD_HEIGHT,
       background: COLORS.white,
       borderRadius: 28,
       border: `1.5px solid ${COLORS.paleBlue}`,
       boxShadow: "0 24px 48px -20px rgba(15, 23, 42, 0.18)",
-      padding: "36px 28px",
+      padding: "30px 24px",
       display: "flex",
       flexDirection: "column",
       alignItems: "center",
-      gap: 20,
+      gap: 18,
       borderTop: `8px solid ${accent}`,
     }}
   >
     <div
       style={{
-        height: 120,
+        height: 116,
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
+        flexShrink: 0,
       }}
     >
       {icon}
@@ -39,7 +45,7 @@ export const IconCard: React.FC<{
       style={{
         fontFamily: DISPLAY,
         fontWeight: 800,
-        fontSize: 37,
+        fontSize: 34,
         letterSpacing: "-0.01em",
         color: COLORS.text,
         textAlign: "center",
@@ -53,7 +59,7 @@ export const IconCard: React.FC<{
         style={{
           fontFamily: FONT,
           fontWeight: 500,
-          fontSize: 27,
+          fontSize: 26,
           color: COLORS.muted,
           textAlign: "center",
           lineHeight: 1.35,
