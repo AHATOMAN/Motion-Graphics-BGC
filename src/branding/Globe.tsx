@@ -11,7 +11,7 @@ export const Globe: React.FC<{ size?: number }> = ({ size = 200 }) => {
           <circle cx="100" cy="100" r="96" />
         </clipPath>
       </defs>
-      <circle cx="100" cy="100" r="96" fill={COLORS.red} />
+      <circle cx="100" cy="100" r="96" fill={COLORS.brandRed} />
       <g
         clipPath={`url(#${clipId})`}
         stroke={COLORS.white}

@@ -1,5 +1,5 @@
 import React, { useId } from "react";
-import { COLORS, FONT } from "../theme";
+import { COLORS, LOGO_FONT } from "../theme";
 
 const StripedCircle: React.FC<{
   cx: number;
@@ -57,16 +57,16 @@ export const BGCLogo: React.FC<{ height?: number }> = ({ height = 170 }) => {
       }}
     >
       <svg viewBox="0 0 380 200" width={width} height={height}>
-        <StripedCircle cx={190} cy={72} r={64} color={COLORS.red} idSuffix="c" />
-        <StripedCircle cx={118} cy={72} r={64} color={COLORS.navy} idSuffix="l" />
-        <StripedCircle cx={262} cy={72} r={64} color={COLORS.navy} idSuffix="r" />
+        <StripedCircle cx={190} cy={72} r={64} color={COLORS.brandRed} idSuffix="c" />
+        <StripedCircle cx={118} cy={72} r={64} color={COLORS.brandNavy} idSuffix="l" />
+        <StripedCircle cx={262} cy={72} r={64} color={COLORS.brandNavy} idSuffix="r" />
         <text
           x={190}
           y={186}
           textAnchor="middle"
-          fill={COLORS.navy}
+          fill={COLORS.brandNavy}
           style={{
-            fontFamily: FONT,
+            fontFamily: LOGO_FONT,
             fontWeight: 800,
             fontSize: 52,
             letterSpacing: "0.45em",

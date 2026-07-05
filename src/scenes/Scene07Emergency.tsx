@@ -68,6 +68,12 @@ export const Scene07Emergency: React.FC = () => {
     extrapolateRight: "clamp",
   });
   const ROUTE_LENGTH = 560;
+  // Emergency light blink + exit door swinging open as the route arrives
+  const blink = Math.sin(frame / 3.5) * 0.5 + 0.5;
+  const doorSwing = interpolate(frame, [10.8 * fps, 12.2 * fps], [0, 58], {
+    extrapolateLeft: "clamp",
+    extrapolateRight: "clamp",
+  });
 
   return (
     <SceneFrame kicker="Be prepared" title="Emergency Procedures">
@@ -85,9 +91,20 @@ export const Scene07Emergency: React.FC = () => {
             <text x={634} y={126} textAnchor="middle" fill="#fff" style={{ fontFamily: FONT, fontWeight: 800, fontSize: 20 }} transform="rotate(-90 634 122)">EXIT</text>
             <rect x={100} y={438} width={80} height={32} fill={COLORS.green} />
             <text x={140} y={461} textAnchor="middle" fill="#fff" style={{ fontFamily: FONT, fontWeight: 800, fontSize: 20 }}>EXIT</text>
-            {/* fire extinguishers */}
-            <circle cx={260} cy={60} r={17} fill={COLORS.red} />
-            <circle cx={470} cy={340} r={17} fill={COLORS.red} />
+            {/* fire extinguishers (pulsing) */}
+            <circle cx={260} cy={60} r={17} fill={COLORS.red} opacity={0.55 + 0.45 * blink} />
+            <circle cx={260} cy={60} r={24} fill="none" stroke={COLORS.red} strokeWidth={3} opacity={0.5 * blink} />
+            <circle cx={470} cy={340} r={17} fill={COLORS.red} opacity={0.55 + 0.45 * blink} />
+            <circle cx={470} cy={340} r={24} fill="none" stroke={COLORS.red} strokeWidth={3} opacity={0.5 * blink} />
+            {/* exit door leaf swings open as the route arrives */}
+            <g
+              style={{
+                rotate: `${doorSwing}deg`,
+                transformOrigin: "618px 84px",
+              }}
+            >
+              <rect x={612} y={82} width={9} height={78} rx={3} fill="#047857" />
+            </g>
             {/* first aid */}
             <rect x={60} y={240} width={38} height={38} rx={8} fill={COLORS.green} />
             <path d="M 79 248 L 79 270 M 68 259 L 90 259" stroke="#fff" strokeWidth={7} />

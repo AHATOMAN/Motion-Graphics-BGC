@@ -71,12 +71,17 @@ const RuleCard: React.FC<{ index: number; title: string; desc: string }> = ({
         display: "flex",
         alignItems: "center",
         gap: 20,
-        background: active ? COLORS.navy : COLORS.white,
-        borderRadius: 20,
+        background: active ? COLORS.white : "rgba(255, 255, 255, 0.06)",
+        border: `1.5px solid ${
+          active ? COLORS.white : "rgba(255, 255, 255, 0.14)"
+        }`,
+        borderRadius: 22,
         padding: "20px 24px",
-        boxShadow: "0 10px 26px rgba(22, 51, 126, 0.12)",
+        boxShadow: active
+          ? "0 24px 48px -16px rgba(0, 0, 0, 0.45)"
+          : "none",
         opacity: t,
-        scale: String(0.8 + 0.2 * t),
+        scale: String(0.8 + 0.2 * t + (active ? 0.04 : 0)),
       }}
     >
       <div
@@ -84,7 +89,7 @@ const RuleCard: React.FC<{ index: number; title: string; desc: string }> = ({
           minWidth: 62,
           height: 62,
           borderRadius: "50%",
-          background: COLORS.red,
+          background: active ? COLORS.brandRed : "rgba(227, 34, 38, 0.85)",
           color: "#fff",
           display: "flex",
           alignItems: "center",
@@ -102,7 +107,7 @@ const RuleCard: React.FC<{ index: number; title: string; desc: string }> = ({
             fontFamily: FONT,
             fontWeight: 700,
             fontSize: 30,
-            color: active ? COLORS.white : COLORS.navy,
+            color: active ? COLORS.text : COLORS.white,
             lineHeight: 1.1,
           }}
         >
@@ -113,7 +118,7 @@ const RuleCard: React.FC<{ index: number; title: string; desc: string }> = ({
             fontFamily: FONT,
             fontWeight: 500,
             fontSize: 22,
-            color: active ? COLORS.paleBlue : COLORS.muted,
+            color: active ? COLORS.muted : "rgba(255, 255, 255, 0.65)",
             lineHeight: 1.2,
           }}
         >
@@ -128,6 +133,7 @@ export const Scene10GoldenRules: React.FC = () => {
   const fps = 30;
   return (
     <SceneFrame
+      dark
       kicker="Commitments that save lives"
       title="The 12 Golden Life Saving Rules"
     >
@@ -165,11 +171,11 @@ export const Scene10GoldenRules: React.FC = () => {
             fontFamily: FONT,
             fontWeight: 700,
             fontSize: 40,
-            color: COLORS.red,
+            color: COLORS.brandRed,
             background: COLORS.white,
             borderRadius: 999,
             padding: "16px 48px",
-            boxShadow: "0 12px 30px rgba(22,51,126,0.15)",
+            boxShadow: "0 20px 44px -12px rgba(0,0,0,0.45)",
           }}
         >
           Follow the 12 Golden Rules — so everyone gets home safely.

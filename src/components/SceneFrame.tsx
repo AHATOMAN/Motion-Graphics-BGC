@@ -1,58 +1,62 @@
 import React from "react";
-import { AbsoluteFill, interpolate, useCurrentFrame } from "remotion";
-import { COLORS, FONT } from "../theme";
-import { Globe } from "../branding/Globe";
-import { EASE } from "./anim";
+import { AbsoluteFill } from "remotion";
+import { COLORS, DISPLAY, FONT } from "../theme";
+import { GlobalLogo } from "../branding/GlobalLogo";
+import { KineticText } from "./KineticText";
+import { FadeUp } from "./anim";
 
-// Shared scene chrome: light branded background, decorative shapes,
-// top-left kicker + title, and a slot for the scene content.
+// Shared scene chrome: high-trust corporate background (light or dark),
+// persistent GLOBAL logo, kicker chip + kinetic display title.
 export const SceneFrame: React.FC<{
   kicker?: string;
   title?: string;
+  dark?: boolean;
   children: React.ReactNode;
-}> = ({ kicker, title, children }) => {
-  const frame = useCurrentFrame();
-
-  const titleAnim = interpolate(frame, [0, 22], [0, 1], {
-    extrapolateLeft: "clamp",
-    extrapolateRight: "clamp",
-    easing: EASE,
-  });
-
+}> = ({ kicker, title, dark = false, children }) => {
   return (
     <AbsoluteFill
       style={{
-        background: `linear-gradient(160deg, ${COLORS.white} 0%, ${COLORS.lightBg} 55%, ${COLORS.paleBlue} 100%)`,
+        background: dark
+          ? `linear-gradient(160deg, ${COLORS.navyDark} 0%, ${COLORS.navy} 100%)`
+          : COLORS.lightBg,
       }}
     >
-      {/* Decorative brand shapes */}
+      {/* Subtle dot grid */}
+      <AbsoluteFill
+        style={{
+          backgroundImage: `radial-gradient(${
+            dark ? "rgba(255,255,255,0.07)" : "rgba(15,23,42,0.05)"
+          } 2px, transparent 2px)`,
+          backgroundSize: "56px 56px",
+        }}
+      />
+      {/* Soft brand glows */}
       <div
         style={{
           position: "absolute",
-          top: -260,
-          right: -220,
-          width: 640,
-          height: 640,
+          top: -340,
+          right: -260,
+          width: 900,
+          height: 900,
           borderRadius: "50%",
-          background: COLORS.paleBlue,
-          opacity: 0.7,
+          background: `radial-gradient(closest-side, ${
+            dark ? "rgba(59,130,246,0.16)" : "rgba(22,51,126,0.08)"
+          }, transparent)`,
         }}
       />
       <div
         style={{
           position: "absolute",
-          bottom: -320,
-          left: -260,
-          width: 700,
-          height: 700,
+          bottom: -380,
+          left: -300,
+          width: 940,
+          height: 940,
           borderRadius: "50%",
-          border: `56px solid ${COLORS.paleBlue}`,
-          opacity: 0.6,
+          background: `radial-gradient(closest-side, ${
+            dark ? "rgba(227,34,38,0.10)" : "rgba(227,34,38,0.05)"
+          }, transparent)`,
         }}
       />
-      <div style={{ position: "absolute", top: 64, right: 84, opacity: 0.16 }}>
-        <Globe size={150} />
-      </div>
 
       {/* Top brand bar */}
       <div
@@ -61,8 +65,8 @@ export const SceneFrame: React.FC<{
           top: 0,
           left: 0,
           right: 0,
-          height: 14,
-          background: COLORS.navy,
+          height: 10,
+          background: COLORS.brandNavy,
         }}
       />
       <div
@@ -71,51 +75,66 @@ export const SceneFrame: React.FC<{
           top: 0,
           left: 0,
           width: 420,
-          height: 14,
-          background: COLORS.red,
+          height: 10,
+          background: COLORS.brandRed,
         }}
       />
+
+      {/* Persistent GLOBAL logo */}
+      <div style={{ position: "absolute", top: 52, right: 90 }}>
+        <GlobalLogo height={52} inverted={dark} />
+      </div>
 
       {/* Header */}
       {title ? (
         <div
           style={{
             position: "absolute",
-            top: 72,
+            top: 74,
             left: 100,
-            right: 280,
+            right: 480,
             display: "flex",
             flexDirection: "column",
-            gap: 10,
-            opacity: titleAnim,
-            translate: `0px ${(1 - titleAnim) * 30}px`,
+            alignItems: "flex-start",
+            gap: 18,
           }}
         >
           {kicker ? (
-            <div
-              style={{
-                fontFamily: FONT,
-                fontWeight: 700,
-                fontSize: 34,
-                letterSpacing: "0.18em",
-                color: COLORS.red,
-                textTransform: "uppercase",
-              }}
-            >
-              {kicker}
-            </div>
+            <FadeUp delay={0}>
+              <div
+                style={{
+                  fontFamily: FONT,
+                  fontWeight: 700,
+                  fontSize: 27,
+                  letterSpacing: "0.16em",
+                  color: dark ? "#93C5FD" : COLORS.brandRed,
+                  textTransform: "uppercase",
+                  background: dark
+                    ? "rgba(59,130,246,0.14)"
+                    : "rgba(227,34,38,0.07)",
+                  border: `1.5px solid ${
+                    dark ? "rgba(147,197,253,0.35)" : "rgba(227,34,38,0.22)"
+                  }`,
+                  borderRadius: 999,
+                  padding: "10px 28px",
+                }}
+              >
+                {kicker}
+              </div>
+            </FadeUp>
           ) : null}
-          <div
+          <KineticText
+            text={title}
+            delay={4}
             style={{
-              fontFamily: FONT,
+              fontFamily: DISPLAY,
               fontWeight: 800,
-              fontSize: 84,
-              lineHeight: 1.05,
-              color: COLORS.navy,
+              fontSize: 88,
+              lineHeight: 1.04,
+              letterSpacing: "-0.02em",
+              color: dark ? COLORS.white : COLORS.text,
             }}
-          >
-            {title}
-          </div>
+          />
         </div>
       ) : null}
 

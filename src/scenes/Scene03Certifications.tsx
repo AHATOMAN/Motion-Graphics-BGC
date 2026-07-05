@@ -70,7 +70,7 @@ const CERTS: { icon: React.ReactNode; label: string; sub: string }[] = [
     sub: "Electrical & Solar Contractor",
   },
   {
-    icon: <Rosette color={COLORS.navy} label="JSRS" />,
+    icon: <Rosette color={COLORS.brandNavy} label="JSRS" />,
     label: "JSRS Registered",
     sub: "Oil & Gas Supplier Registration",
   },

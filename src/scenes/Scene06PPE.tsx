@@ -104,7 +104,7 @@ export const Scene06PPE: React.FC = () => {
             );
           })}
           <FadeUp delay={9.5 * fps} style={{ marginTop: 30 }}>
-            <BannerText text="Always check your PPE before starting work." />
+            <BannerText tone="positive" text="Always check your PPE before starting work." />
           </FadeUp>
         </div>
       </ContentArea>

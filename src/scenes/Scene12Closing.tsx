@@ -1,10 +1,12 @@
 import React from "react";
 import { AbsoluteFill, interpolate, useCurrentFrame } from "remotion";
-import { COLORS, FONT } from "../theme";
+import { COLORS, DISPLAY } from "../theme";
+import { KineticText } from "../components/KineticText";
 import { SubtitleBar, SubtitleChunk } from "../components/SubtitleBar";
 import { FadeUp, Pop, EASE } from "../components/anim";
 import { Avatar } from "../components/People";
 import { VoiceOver } from "../components/VoiceOver";
+import { GlobalLogo } from "../branding/GlobalLogo";
 
 export const SCENE_12_SECONDS = 10;
 
@@ -26,7 +28,23 @@ export const Scene12Closing: React.FC = () => {
   });
 
   return (
-    <AbsoluteFill style={{ background: COLORS.navy }}>
+    <AbsoluteFill
+      style={{
+        background: `linear-gradient(160deg, ${COLORS.navyDark} 0%, ${COLORS.brandNavy} 100%)`,
+      }}
+    >
+      {/* Persistent GLOBAL logo */}
+      <div
+        style={{
+          position: "absolute",
+          top: 52,
+          right: 90,
+          display: "flex",
+          justifyContent: "center",
+        }}
+      >
+        <GlobalLogo height={52} inverted />
+      </div>
       {/* soft shapes */}
       <div
         style={{
@@ -64,13 +82,21 @@ export const Scene12Closing: React.FC = () => {
               background: COLORS.white,
               borderRadius: 999,
               padding: "26px 80px",
-              fontFamily: FONT,
-              fontWeight: 800,
-              fontSize: 72,
-              color: COLORS.navy,
+              boxShadow: "0 30px 60px -20px rgba(0,0,0,0.5)",
             }}
           >
-            Together, We Work Safely.
+            <KineticText
+              text="Together, We Work Safely."
+              delay={12}
+              style={{
+                fontFamily: DISPLAY,
+                fontWeight: 800,
+                fontSize: 72,
+                letterSpacing: "-0.02em",
+                color: COLORS.brandNavy,
+                justifyContent: "center",
+              }}
+            />
           </div>
         </FadeUp>
         <div style={{ display: "flex", gap: 46 }}>
@@ -86,13 +112,15 @@ export const Scene12Closing: React.FC = () => {
           style={{
             scale: String(bannerScale),
             opacity: bannerScale,
-            background: COLORS.red,
+            background: COLORS.brandRed,
             color: COLORS.white,
-            fontFamily: FONT,
+            fontFamily: DISPLAY,
             fontWeight: 800,
             fontSize: 56,
+            letterSpacing: "-0.01em",
             padding: "20px 70px",
             borderRadius: 999,
+            boxShadow: "0 24px 48px -12px rgba(227,34,38,0.5)",
           }}
         >
           Safety First! Always.

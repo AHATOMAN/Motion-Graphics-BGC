@@ -51,15 +51,18 @@ export const SubtitleBar: React.FC<{ chunks: SubtitleChunk[] }> = ({
             <div
               style={{
                 maxWidth: 1560,
-                background: "rgba(14, 34, 88, 0.82)",
+                background: "rgba(15, 23, 42, 0.78)",
+                backdropFilter: "blur(14px)",
+                WebkitBackdropFilter: "blur(14px)",
+                border: "1.5px solid rgba(255, 255, 255, 0.10)",
                 color: COLORS.white,
                 fontFamily: FONT,
                 fontWeight: 600,
-                fontSize: 40,
-                lineHeight: 1.35,
+                fontSize: 38,
+                lineHeight: 1.38,
                 textAlign: "center",
-                padding: "18px 44px",
-                borderRadius: 18,
+                padding: "18px 46px",
+                borderRadius: 22,
               }}
             >
               {chunk.text}

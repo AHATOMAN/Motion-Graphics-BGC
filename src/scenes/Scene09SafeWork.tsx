@@ -73,7 +73,7 @@ export const Scene09SafeWork: React.FC = () => {
                 flexDirection: "column",
                 alignItems: "center",
                 gap: 16,
-                background: "#FDEDED",
+                background: "#FEF2F2",
                 border: `4px solid ${COLORS.red}`,
                 borderRadius: 28,
                 padding: "30px 46px",
@@ -93,7 +93,7 @@ export const Scene09SafeWork: React.FC = () => {
                 flexDirection: "column",
                 alignItems: "center",
                 gap: 16,
-                background: "#EDF8F0",
+                background: "#ECFDF5",
                 border: `4px solid ${COLORS.green}`,
                 borderRadius: 28,
                 padding: "30px 46px",
@@ -108,7 +108,7 @@ export const Scene09SafeWork: React.FC = () => {
           </Pop>
         </div>
         <FadeUp delay={6.4 * fps}>
-          <BannerText text="Lifting: Use your legs, not your back." />
+          <BannerText tone="positive" text="Lifting: Use your legs, not your back." />
         </FadeUp>
       </ContentArea>
       <VoiceOver file="scene-09.mp3" />

@@ -13,7 +13,7 @@ const Icon: React.FC<{ color: string; children: React.ReactNode }> = ({
 
 const icons = [
   // Quality - blue check
-  <Icon key="q" color={COLORS.blue}>
+  <Icon key="q" color="#1877C9">
     <path
       d="M -13 1 L -4 10 L 14 -10"
       stroke="#fff"
@@ -24,27 +24,27 @@ const icons = [
     />
   </Icon>,
   // Health - red heart
-  <Icon key="h" color={COLORS.red}>
+  <Icon key="h" color={COLORS.brandRed}>
     <path
       d="M 0 14 C -20 0 -14 -16 -4 -12 C -1 -11 0 -8 0 -8 C 0 -8 1 -11 4 -12 C 14 -16 20 0 0 14 Z"
       fill="#fff"
     />
   </Icon>,
   // Safety - yellow hard hat
-  <Icon key="s" color={COLORS.yellow}>
+  <Icon key="s" color="#F5B300">
     <path d="M -14 4 A 14 14 0 0 1 14 4 Z" fill="#fff" />
     <rect x={-19} y={4} width={38} height={5} rx={2.5} fill="#fff" />
     <rect x={-3} y={-16} width={6} height={8} rx={2} fill="#fff" />
   </Icon>,
   // Environment - green leaf
-  <Icon key="e" color={COLORS.green}>
+  <Icon key="e" color="#2FA84F">
     <path
       d="M -10 12 C -14 -6 0 -16 14 -14 C 16 0 6 12 -10 12 Z"
       fill="#fff"
     />
     <path
       d="M -12 14 C -4 4 4 -4 12 -12"
-      stroke={COLORS.green}
+      stroke="#2FA84F"
       strokeWidth={2.5}
       fill="none"
     />
@@ -77,7 +77,7 @@ export const QhseBadge: React.FC<{ width?: number }> = ({ width = 560 }) => {
           width: width * 0.62,
           height: width * 0.016,
           borderRadius: width * 0.008,
-          background: COLORS.green,
+          background: "#2FA84F",
         }}
       />
       <div
