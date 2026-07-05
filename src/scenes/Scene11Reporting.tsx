@@ -5,14 +5,15 @@ import { SceneFrame, ContentArea } from "../components/SceneFrame";
 import { SubtitleBar, SubtitleChunk } from "../components/SubtitleBar";
 import { FadeUp, Pop } from "../components/anim";
 import { BannerText } from "../components/Card";
+import { VoiceOver } from "../components/VoiceOver";
 
-export const SCENE_11_SECONDS = 14;
+export const SCENE_11_SECONDS = 13;
 
 const chunks: SubtitleChunk[] = [
-  { from: 0.5, to: 4.5, text: "Report any incidents or near-misses." },
+  { from: 0.6, to: 3.2, text: "Report any incidents or near-misses." },
   {
-    from: 4.5,
-    to: 8.5,
+    from: 3.2,
+    to: 6.2,
     text: "Reporting helps prevent future accidents.",
   },
 ];
@@ -91,7 +92,7 @@ export const Scene11Reporting: React.FC = () => {
             maxWidth: 700,
           }}
         >
-          <Pop delay={5 * fps}>
+          <Pop delay={3.6 * fps}>
             <div
               style={{
                 fontFamily: FONT,
@@ -104,11 +105,12 @@ export const Scene11Reporting: React.FC = () => {
               Reporting today prevents the accident of tomorrow.
             </div>
           </Pop>
-          <FadeUp delay={9 * fps}>
+          <FadeUp delay={6.2 * fps}>
             <BannerText text="Near misses could have caused injury — report them!" />
           </FadeUp>
         </div>
       </ContentArea>
+      <VoiceOver file="scene-11.mp3" />
       <SubtitleBar chunks={chunks} />
     </SceneFrame>
   );

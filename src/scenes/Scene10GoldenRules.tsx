@@ -4,8 +4,9 @@ import { COLORS, FONT } from "../theme";
 import { SceneFrame } from "../components/SceneFrame";
 import { SubtitleBar, SubtitleChunk } from "../components/SubtitleBar";
 import { FadeUp } from "../components/anim";
+import { VoiceOver } from "../components/VoiceOver";
 
-export const SCENE_10_SECONDS = 42;
+export const SCENE_10_SECONDS = 99;
 
 const RULES: { title: string; desc: string }[] = [
   { title: "Life of Line", desc: "Comply with HSE rules" },
@@ -22,8 +23,10 @@ const RULES: { title: string; desc: string }[] = [
   { title: "PPE", desc: "Wear the correct PPE, always" },
 ];
 
-const INTRO = 4; // seconds before the first rule
-const PER_RULE = 2.6;
+// Timed against the narration audio: the intro sentence runs ~12s and
+// each spoken rule takes ~6.1s.
+const INTRO = 12.5; // seconds before the first rule
+const PER_RULE = 6.1;
 
 const ruleChunks: SubtitleChunk[] = RULES.map((r, i) => ({
   from: INTRO + i * PER_RULE,
@@ -33,15 +36,15 @@ const ruleChunks: SubtitleChunk[] = RULES.map((r, i) => ({
 
 const chunks: SubtitleChunk[] = [
   {
-    from: 0.5,
+    from: 0.6,
     to: INTRO,
-    text: "The GCMS 12 Golden Life Saving Rules ensure workers work safely and return safely to their loved ones.",
+    text: "The GCMS 12 Golden Life Saving Rules are concise commitment statements designed to ensure workers work safely — and return safely to their loved ones.",
   },
   ...ruleChunks,
   {
     from: INTRO + 12 * PER_RULE + 0.4,
-    to: 41.5,
-    text: "The pocketbook is distributed to every employee — in English, Arabic, Hindi, Urdu and Bangla.",
+    to: 97.4,
+    text: "The pocketbook is distributed to every employee in their preferred language — English, Arabic, Hindi, Urdu and Bangla.",
   },
 ];
 
@@ -172,6 +175,7 @@ export const Scene10GoldenRules: React.FC = () => {
           Follow the 12 Golden Rules — so everyone gets home safely.
         </div>
       </FadeUp>
+      <VoiceOver file="scene-10.mp3" />
       <SubtitleBar chunks={chunks} />
     </SceneFrame>
   );

@@ -3,6 +3,7 @@ import { AbsoluteFill } from "remotion";
 import { COLORS, FONT } from "../theme";
 import { SubtitleBar, SubtitleChunk } from "../components/SubtitleBar";
 import { FadeUp } from "../components/anim";
+import { VoiceOver } from "../components/VoiceOver";
 import { GlobalLogo } from "../branding/GlobalLogo";
 import { BGCLogo } from "../branding/BGCLogo";
 import { QhseBadge } from "../branding/QhseBadge";
@@ -11,10 +12,16 @@ export const SCENE_13_SECONDS = 12;
 
 const chunks: SubtitleChunk[] = [
   {
-    from: 0.5,
-    to: 6,
-    text: "Thank you for completing your HSE induction. Stay safe!",
+    from: 0.6,
+    to: 3.4,
+    text: "Thank you for completing your HSE induction.",
   },
+  {
+    from: 3.4,
+    to: 7.6,
+    text: "For any questions or concerns about safety, please speak with your supervisor.",
+  },
+  { from: 7.6, to: 9.8, text: "Stay safe!" },
 ];
 
 export const Scene13Credits: React.FC = () => {
@@ -61,6 +68,7 @@ export const Scene13Credits: React.FC = () => {
           <QhseBadge width={620} />
         </FadeUp>
       </AbsoluteFill>
+      <VoiceOver file="scene-13.mp3" />
       <SubtitleBar chunks={chunks} />
     </AbsoluteFill>
   );

@@ -5,8 +5,9 @@ import { GlobalLogo } from "../branding/GlobalLogo";
 import { BGCLogo } from "../branding/BGCLogo";
 import { SubtitleBar, SubtitleChunk } from "../components/SubtitleBar";
 import { FadeUp, Pop, EASE } from "../components/anim";
+import { VoiceOver } from "../components/VoiceOver";
 
-export const SCENE_01_SECONDS = 16;
+export const SCENE_01_SECONDS = 17;
 
 const chunks: SubtitleChunk[] = [
   {
@@ -19,7 +20,7 @@ const chunks: SubtitleChunk[] = [
     to: 11.5,
     text: "Today, we'll introduce you to the key safety guidelines and best practices to keep you safe while working with us.",
   },
-  { from: 11.5, to: 15.5, text: "Safety is everyone's responsibility." },
+  { from: 11.5, to: 15.6, text: "Safety is everyone's responsibility." },
 ];
 
 export const Scene01Welcome: React.FC = () => {
@@ -80,6 +81,7 @@ export const Scene01Welcome: React.FC = () => {
           </FadeUp>
         </div>
       </AbsoluteFill>
+      <VoiceOver file="scene-01.mp3" />
       <SubtitleBar chunks={chunks} />
     </AbsoluteFill>
   );

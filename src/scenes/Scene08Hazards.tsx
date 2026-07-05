@@ -4,19 +4,20 @@ import { SceneFrame, ContentArea } from "../components/SceneFrame";
 import { SubtitleBar, SubtitleChunk } from "../components/SubtitleBar";
 import { Pop, FadeUp } from "../components/anim";
 import { IconCard, BannerText } from "../components/Card";
+import { VoiceOver } from "../components/VoiceOver";
 
-export const SCENE_08_SECONDS = 16;
+export const SCENE_08_SECONDS = 13;
 
 const chunks: SubtitleChunk[] = [
   {
-    from: 0.5,
-    to: 5.5,
+    from: 0.6,
+    to: 4.5,
     text: "Identifying hazards is the first step in preventing accidents.",
   },
   {
-    from: 5.5,
-    to: 10.5,
-    text: "Always be alert to potential risks in your work area.",
+    from: 4.5,
+    to: 8,
+    text: "Always be alert about potential risks in your work area.",
   },
 ];
 
@@ -74,20 +75,21 @@ export const Scene08Hazards: React.FC = () => {
     <SceneFrame kicker="Stay alert" title="Hazard Identification">
       <ContentArea top={300} style={{ flexDirection: "column", gap: 56 }}>
         <div style={{ display: "flex", gap: 44 }}>
-          <Pop delay={2 * fps}>
+          <Pop delay={1.5 * fps}>
             <IconCard icon={SlipIcon} label="Slippery Floors" sub="Spills & wet surfaces" width={380} />
           </Pop>
-          <Pop delay={3.2 * fps}>
+          <Pop delay={2.5 * fps}>
             <IconCard icon={MachineIcon} label="Moving Machinery" sub="Rotating & moving parts" width={380} />
           </Pop>
-          <Pop delay={4.4 * fps}>
+          <Pop delay={3.5 * fps}>
             <IconCard icon={ElectricIcon} label="Electrical Wiring" sub="Live cables & panels" width={380} />
           </Pop>
         </div>
-        <FadeUp delay={11 * fps}>
+        <FadeUp delay={8.2 * fps}>
           <BannerText text="Report any hazards immediately to your supervisor." />
         </FadeUp>
       </ContentArea>
+      <VoiceOver file="scene-08.mp3" />
       <SubtitleBar chunks={chunks} />
     </SceneFrame>
   );

@@ -5,19 +5,20 @@ import { SceneFrame, ContentArea } from "../components/SceneFrame";
 import { SubtitleBar, SubtitleChunk } from "../components/SubtitleBar";
 import { FadeUp, Pop } from "../components/anim";
 import { BannerText } from "../components/Card";
+import { VoiceOver } from "../components/VoiceOver";
 
-export const SCENE_07_SECONDS = 16;
+export const SCENE_07_SECONDS = 14;
 
 const chunks: SubtitleChunk[] = [
   {
-    from: 0.5,
-    to: 6,
+    from: 0.6,
+    to: 4.6,
     text: "Know the emergency exits and the locations of safety equipment —",
   },
   {
-    from: 6,
-    to: 10.5,
-    text: "fire extinguishers, first-aid kits, and emergency assembly points.",
+    from: 4.6,
+    to: 8.2,
+    text: "such as fire extinguishers, first-aid kits, and emergency assembly points.",
   },
 ];
 
@@ -61,8 +62,8 @@ export const Scene07Emergency: React.FC = () => {
   const frame = useCurrentFrame();
   const fps = 30;
 
-  // Animated evacuation route (draws on between 10.5s and 14s)
-  const routeProgress = interpolate(frame, [10.5 * fps, 14 * fps], [1, 0], {
+  // Animated evacuation route (draws on while the closing line is spoken)
+  const routeProgress = interpolate(frame, [8.2 * fps, 11.5 * fps], [1, 0], {
     extrapolateLeft: "clamp",
     extrapolateRight: "clamp",
   });
@@ -113,23 +114,24 @@ export const Scene07Emergency: React.FC = () => {
           </svg>
         </FadeUp>
         <div style={{ display: "flex", flexDirection: "column", gap: 34 }}>
-          <Pop delay={2 * fps}>
+          <Pop delay={1.5 * fps}>
             <Legend color={COLORS.green} symbol="⇥" label="Emergency Exits" />
           </Pop>
-          <Pop delay={6 * fps}>
+          <Pop delay={4.8 * fps}>
             <Legend color={COLORS.red} symbol="●" label="Fire Extinguishers" />
           </Pop>
-          <Pop delay={7.5 * fps}>
+          <Pop delay={5.8 * fps}>
             <Legend color={COLORS.green} symbol="+" label="First-Aid Kits" />
           </Pop>
-          <Pop delay={9 * fps}>
+          <Pop delay={6.8 * fps}>
             <Legend color={COLORS.green} symbol="⚑" label="Assembly Points" />
           </Pop>
-          <FadeUp delay={11 * fps} style={{ marginTop: 26, maxWidth: 640 }}>
+          <FadeUp delay={8.4 * fps} style={{ marginTop: 26, maxWidth: 640 }}>
             <BannerText text="In case of emergency, follow the evacuation plan." />
           </FadeUp>
         </div>
       </ContentArea>
+      <VoiceOver file="scene-07.mp3" />
       <SubtitleBar chunks={chunks} />
     </SceneFrame>
   );

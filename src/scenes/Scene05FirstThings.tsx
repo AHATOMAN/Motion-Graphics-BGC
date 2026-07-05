@@ -4,29 +4,30 @@ import { SceneFrame, ContentArea } from "../components/SceneFrame";
 import { SubtitleBar, SubtitleChunk } from "../components/SubtitleBar";
 import { Pop } from "../components/anim";
 import { IconCard } from "../components/Card";
+import { VoiceOver } from "../components/VoiceOver";
 
-export const SCENE_05_SECONDS = 18;
+export const SCENE_05_SECONDS = 26;
 
 const chunks: SubtitleChunk[] = [
   {
-    from: 0.5,
-    to: 5,
-    text: "Here are a few simple rules to start your visit off right — beginning at reception.",
+    from: 0.6,
+    to: 5.5,
+    text: "Here are a few simple rules to get your visit starting off right.",
   },
   {
-    from: 5,
-    to: 9.5,
-    text: "Please keep your visitor pass visible at all times, and return it when you leave.",
+    from: 5.5,
+    to: 11,
+    text: "Please ensure that your visitor pass is visible at all times, and return it when you leave.",
   },
   {
-    from: 9.5,
-    to: 13.5,
-    text: "Your safety is your responsibility. Your host will assist you — feel free to ask them any questions.",
+    from: 11,
+    to: 18,
+    text: "Your safety is your responsibility, and our host will assist you — please feel free to ask them any questions.",
   },
   {
-    from: 13.5,
-    to: 17.5,
-    text: "To protect company property, assets and privacy, photographs and video may only be taken with prior approval.",
+    from: 18,
+    to: 24.5,
+    text: "To protect company property, assets and privacy, photographs and video can only be taken with prior approval.",
   },
 ];
 
@@ -65,7 +66,7 @@ export const Scene05FirstThings: React.FC = () => {
   return (
     <SceneFrame kicker="Starting off right" title="First Things First!">
       <ContentArea top={310} style={{ gap: 50 }}>
-        <Pop delay={5 * fps}>
+        <Pop delay={5.5 * fps}>
           <IconCard
             icon={PassIcon}
             label="Visitor Pass"
@@ -73,7 +74,7 @@ export const Scene05FirstThings: React.FC = () => {
             width={420}
           />
         </Pop>
-        <Pop delay={9.5 * fps}>
+        <Pop delay={11 * fps}>
           <IconCard
             icon={HostIcon}
             label="Your Host Assists You"
@@ -81,7 +82,7 @@ export const Scene05FirstThings: React.FC = () => {
             width={420}
           />
         </Pop>
-        <Pop delay={13.5 * fps}>
+        <Pop delay={18 * fps}>
           <IconCard
             icon={NoPhotoIcon}
             label="No Photos or Video"
@@ -90,6 +91,7 @@ export const Scene05FirstThings: React.FC = () => {
           />
         </Pop>
       </ContentArea>
+      <VoiceOver file="scene-05.mp3" />
       <SubtitleBar chunks={chunks} />
     </SceneFrame>
   );

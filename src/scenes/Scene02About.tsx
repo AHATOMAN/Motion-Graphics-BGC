@@ -3,34 +3,45 @@ import { COLORS, FONT } from "../theme";
 import { SceneFrame, ContentArea } from "../components/SceneFrame";
 import { SubtitleBar, SubtitleChunk } from "../components/SubtitleBar";
 import { FadeUp, Pop } from "../components/anim";
+import { VoiceOver } from "../components/VoiceOver";
 
-export const SCENE_02_SECONDS = 34;
+export const SCENE_02_SECONDS = 65;
 
 const chunks: SubtitleChunk[] = [
   {
-    from: 0.5,
-    to: 6.5,
-    text: "For over four decades, GCMS has been associated with Power and Water & Wastewater — life's most essential industries in the Sultanate of Oman.",
+    from: 0.6,
+    to: 8.5,
+    text: "Over the last four decades, GCMS has been actively associated with Power and Water & Wastewater industries — life's most essentials in the Sultanate of Oman.",
   },
   {
-    from: 6.5,
-    to: 12.5,
-    text: "Established in 1963, GCMS became a 100% Omani company in 1976 and is a member of the Al Barami Group of Companies.",
+    from: 8.5,
+    to: 17.5,
+    text: "Established in 1963, and becoming a 100% Omani company in 1976, it became a member of the Al Barami Group of Companies.",
   },
   {
-    from: 12.5,
-    to: 19.5,
-    text: "GCMS handles the entire project lifecycle — BOOT, Engineering, Procurement, Construction, Testing, Commissioning, Operation & Maintenance and Facilities Management.",
+    from: 17.5,
+    to: 30,
+    text: "GCMS handles the entire project lifecycle — BOOT (Build, Own, Operate & Transfer), Engineering, Procurement, Construction, Testing, Commissioning, Operation & Maintenance, and Facilities Management —",
   },
   {
-    from: 19.5,
-    to: 26,
-    text: "Our work spans Power, Water & Wastewater and Renewable Energy, with a workforce of 1,500+ across all regions of the Sultanate of Oman.",
+    from: 30,
+    to: 37,
+    text: "across Power, Water & Wastewater and Renewable Energy.",
   },
   {
-    from: 26,
-    to: 33.5,
-    text: "GCMS is committed to being a leader in Quality, Health, Safety and Environmental protection — for our people, our processes, and our communities.",
+    from: 37,
+    to: 45,
+    text: "GCMS currently has a workforce of 1,500+ spread across all regions of the Sultanate of Oman.",
+  },
+  {
+    from: 45,
+    to: 55,
+    text: "GCMS is committed to being a leader in Quality, Health, Safety and Environmental Protection — with the utmost emphasis on the safety of its people and processes,",
+  },
+  {
+    from: 55,
+    to: 63.6,
+    text: "and the well-being of the communities and stakeholders.",
   },
 ];
 
@@ -112,7 +123,7 @@ export const Scene02About: React.FC = () => {
         </div>
 
         {/* Timeline */}
-        <FadeUp delay={7 * fps}>
+        <FadeUp delay={9 * fps}>
           <div
             style={{
               display: "flex",
@@ -160,7 +171,7 @@ export const Scene02About: React.FC = () => {
           }}
         >
           {LIFECYCLE.map((step, i) => (
-            <Pop key={step} delay={13 * fps + i * 7}>
+            <Pop key={step} delay={18 * fps + i * 30}>
               <div
                 style={{
                   fontFamily: FONT,
@@ -181,7 +192,7 @@ export const Scene02About: React.FC = () => {
         </div>
 
         {/* Commitment */}
-        <FadeUp delay={26 * fps}>
+        <FadeUp delay={45 * fps}>
           <div
             style={{
               fontFamily: FONT,
@@ -195,6 +206,7 @@ export const Scene02About: React.FC = () => {
           </div>
         </FadeUp>
       </ContentArea>
+      <VoiceOver file="scene-02.mp3" />
       <SubtitleBar chunks={chunks} />
     </SceneFrame>
   );

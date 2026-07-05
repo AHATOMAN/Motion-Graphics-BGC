@@ -4,14 +4,15 @@ import { SceneFrame, ContentArea } from "../components/SceneFrame";
 import { SubtitleBar, SubtitleChunk } from "../components/SubtitleBar";
 import { Pop, FadeUp } from "../components/anim";
 import { BannerText } from "../components/Card";
+import { VoiceOver } from "../components/VoiceOver";
 
-export const SCENE_09_SECONDS = 14;
+export const SCENE_09_SECONDS = 11;
 
 const chunks: SubtitleChunk[] = [
-  { from: 0.5, to: 4.5, text: "Follow safe work practices at all times." },
+  { from: 0.6, to: 3.4, text: "Follow safe work practices at all times." },
   {
-    from: 4.5,
-    to: 8.5,
+    from: 3.4,
+    to: 6.2,
     text: "Always read signs and instructions carefully.",
   },
 ];
@@ -65,7 +66,7 @@ export const Scene09SafeWork: React.FC = () => {
     <SceneFrame kicker="Do it the right way" title="Safe Work Practices">
       <ContentArea top={300} style={{ flexDirection: "column", gap: 46 }}>
         <div style={{ display: "flex", gap: 120 }}>
-          <Pop delay={2 * fps}>
+          <Pop delay={1.5 * fps}>
             <div
               style={{
                 display: "flex",
@@ -85,7 +86,7 @@ export const Scene09SafeWork: React.FC = () => {
               </div>
             </div>
           </Pop>
-          <Pop delay={5 * fps}>
+          <Pop delay={3.5 * fps}>
             <div
               style={{
                 display: "flex",
@@ -106,10 +107,11 @@ export const Scene09SafeWork: React.FC = () => {
             </div>
           </Pop>
         </div>
-        <FadeUp delay={9 * fps}>
+        <FadeUp delay={6.4 * fps}>
           <BannerText text="Lifting: Use your legs, not your back." />
         </FadeUp>
       </ContentArea>
+      <VoiceOver file="scene-09.mp3" />
       <SubtitleBar chunks={chunks} />
     </SceneFrame>
   );

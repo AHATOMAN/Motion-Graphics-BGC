@@ -6,28 +6,29 @@ import { SubtitleBar, SubtitleChunk } from "../components/SubtitleBar";
 import { FadeUp } from "../components/anim";
 import { BannerText } from "../components/Card";
 import { PPEWorker } from "../components/People";
+import { VoiceOver } from "../components/VoiceOver";
 
-export const SCENE_06_SECONDS = 20;
+export const SCENE_06_SECONDS = 15;
 
 const chunks: SubtitleChunk[] = [
   {
-    from: 0.5,
+    from: 0.6,
     to: 6,
-    text: "Before you start, it's essential to wear the correct Personal Protective Equipment — PPE.",
+    text: "Before you start, it's essential to wear the correct Personal Protective Equipment, or PPE.",
   },
   {
     from: 6,
-    to: 13,
+    to: 9.3,
     text: "Your safety gear will help protect you from potential hazards.",
   },
 ];
 
 const ITEMS: { key: "hat" | "goggles" | "vest" | "gloves" | "boots"; label: string; at: number }[] = [
-  { key: "hat", label: "Hard Hat", at: 3 },
-  { key: "goggles", label: "Safety Goggles", at: 5.2 },
-  { key: "vest", label: "Reflective Vest", at: 7.4 },
-  { key: "gloves", label: "Gloves", at: 9.6 },
-  { key: "boots", label: "Safety Boots", at: 11.8 },
+  { key: "hat", label: "Hard Hat", at: 2.5 },
+  { key: "goggles", label: "Safety Goggles", at: 3.9 },
+  { key: "vest", label: "Reflective Vest", at: 5.3 },
+  { key: "gloves", label: "Gloves", at: 6.7 },
+  { key: "boots", label: "Safety Boots", at: 8.1 },
 ];
 
 export const Scene06PPE: React.FC = () => {
@@ -41,11 +42,11 @@ export const Scene06PPE: React.FC = () => {
     });
 
   const gear = {
-    hat: gearOpacity(3),
-    goggles: gearOpacity(5.2),
-    vest: gearOpacity(7.4),
-    gloves: gearOpacity(9.6),
-    boots: gearOpacity(11.8),
+    hat: gearOpacity(2.5),
+    goggles: gearOpacity(3.9),
+    vest: gearOpacity(5.3),
+    gloves: gearOpacity(6.7),
+    boots: gearOpacity(8.1),
   };
 
   return (
@@ -102,11 +103,12 @@ export const Scene06PPE: React.FC = () => {
               </div>
             );
           })}
-          <FadeUp delay={14 * fps} style={{ marginTop: 30 }}>
+          <FadeUp delay={9.5 * fps} style={{ marginTop: 30 }}>
             <BannerText text="Always check your PPE before starting work." />
           </FadeUp>
         </div>
       </ContentArea>
+      <VoiceOver file="scene-06.mp3" />
       <SubtitleBar chunks={chunks} />
     </SceneFrame>
   );

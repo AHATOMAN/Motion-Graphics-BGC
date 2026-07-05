@@ -4,13 +4,14 @@ import { COLORS, FONT } from "../theme";
 import { SubtitleBar, SubtitleChunk } from "../components/SubtitleBar";
 import { FadeUp, Pop, EASE } from "../components/anim";
 import { Avatar } from "../components/People";
+import { VoiceOver } from "../components/VoiceOver";
 
-export const SCENE_12_SECONDS = 12;
+export const SCENE_12_SECONDS = 10;
 
 const chunks: SubtitleChunk[] = [
   {
-    from: 0.5,
-    to: 6,
+    from: 0.6,
+    to: 5.8,
     text: "Safety is a team effort. Let's work together to ensure everyone stays safe on the job.",
   },
 ];
@@ -97,6 +98,7 @@ export const Scene12Closing: React.FC = () => {
           Safety First! Always.
         </div>
       </AbsoluteFill>
+      <VoiceOver file="scene-12.mp3" />
       <SubtitleBar chunks={chunks} />
     </AbsoluteFill>
   );

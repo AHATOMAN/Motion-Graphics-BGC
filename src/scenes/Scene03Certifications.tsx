@@ -4,29 +4,30 @@ import { SceneFrame, ContentArea } from "../components/SceneFrame";
 import { SubtitleBar, SubtitleChunk } from "../components/SubtitleBar";
 import { Pop } from "../components/anim";
 import { IconCard } from "../components/Card";
+import { VoiceOver } from "../components/VoiceOver";
 
-export const SCENE_03_SECONDS = 20;
+export const SCENE_03_SECONDS = 28;
 
 const chunks: SubtitleChunk[] = [
   {
-    from: 0.5,
-    to: 5.5,
-    text: "GCMS is approved as a “Grade A” Electrical & Solar contractor by the Distribution Code Review Panel (DCRP).",
+    from: 0.6,
+    to: 7.2,
+    text: "GCMS is approved as a “Grade A” Electrical & Solar Contractor by the Distribution Code Review Panel (DCRP).",
   },
   {
-    from: 5.5,
-    to: 10.5,
+    from: 7.2,
+    to: 14,
     text: "We are registered on the Joint Supplier Registration System (JSRS) for Oil & Gas, and GCMS is a member of OPAL.",
   },
   {
-    from: 10.5,
-    to: 15,
-    text: "GCMS is certified to ISO 9001, ISO 14001 and ISO 45001 — the QHSE management system standards.",
+    from: 14,
+    to: 20,
+    text: "GCMS is certified with the ISO QHSE Management Systems 9001, 14001 & 45001,",
   },
   {
-    from: 15,
-    to: 19.5,
-    text: "GCMS is also registered as “Excellent Grade” with the Tender Board.",
+    from: 20,
+    to: 26,
+    text: "and is registered as “Excellent Grade” with the Tender Board.",
   },
 ];
 
@@ -92,7 +93,7 @@ const CERTS: { icon: React.ReactNode; label: string; sub: string }[] = [
 
 export const Scene03Certifications: React.FC = () => {
   const fps = 30;
-  const delays = [1, 6, 8.5, 11, 15.5];
+  const delays = [1.5, 7.5, 10.5, 14.5, 20.5];
   return (
     <SceneFrame kicker="Trusted & Accredited" title="Approvals & Certifications">
       <ContentArea top={300} style={{ gap: 24 }}>
@@ -102,6 +103,7 @@ export const Scene03Certifications: React.FC = () => {
           </Pop>
         ))}
       </ContentArea>
+      <VoiceOver file="scene-03.mp3" />
       <SubtitleBar chunks={chunks} />
     </SceneFrame>
   );
