@@ -5,17 +5,36 @@ import { SubtitleBar } from "../components/SubtitleBar";
 import { SUBTITLES } from "../data/subtitles";
 import { Pop } from "../components/anim";
 import { IconCard } from "../components/Card";
+import { DCRPLogo, JSRSLogo, OPALLogo, ISOLogo } from "../branding/CertLogos";
 import { VoiceOver } from "../components/VoiceOver";
 
 export const SCENE_03_SECONDS = 28;
 
 const chunks = SUBTITLES["scene-03"];
 
+// Accreditation logos sit on a clean white tile inside each card.
+const LogoTile: React.FC<{ children: React.ReactNode }> = ({ children }) => (
+  <div
+    style={{
+      width: 240,
+      height: 116,
+      background: "#ffffff",
+      borderRadius: 16,
+      border: `1.5px solid ${COLORS.paleBlue}`,
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+    }}
+  >
+    {children}
+  </div>
+);
+
 const Rosette: React.FC<{ color: string; label: string }> = ({
   color,
   label,
 }) => (
-  <svg viewBox="-60 -60 120 120" width={110} height={110}>
+  <svg viewBox="-60 -60 120 120" width={104} height={104}>
     <circle cx={0} cy={0} r={44} fill={color} />
     {Array.from({ length: 12 }).map((_, i) => {
       const a = (i / 12) * Math.PI * 2;
@@ -45,22 +64,22 @@ const Rosette: React.FC<{ color: string; label: string }> = ({
 
 const CERTS: { icon: React.ReactNode; label: string; sub: string }[] = [
   {
-    icon: <Rosette color={COLORS.red} label="A" />,
+    icon: <DCRPLogo height={118} />,
     label: "DCRP “Grade A”",
     sub: "Electrical & Solar Contractor",
   },
   {
-    icon: <Rosette color={COLORS.brandNavy} label="JSRS" />,
+    icon: <JSRSLogo height={106} />,
     label: "JSRS Registered",
     sub: "Oil & Gas Supplier Registration",
   },
   {
-    icon: <Rosette color={COLORS.green} label="OPAL" />,
+    icon: <OPALLogo height={112} />,
     label: "OPAL Member",
     sub: "Oman Energy Association",
   },
   {
-    icon: <Rosette color={COLORS.blue} label="ISO" />,
+    icon: <ISOLogo height={106} />,
     label: "ISO 9001 · 14001 · 45001",
     sub: "Certified QHSE Management System",
   },
@@ -79,7 +98,11 @@ export const Scene03Certifications: React.FC = () => {
       <ContentArea top={300} style={{ gap: 23 }}>
         {CERTS.map((c, i) => (
           <Pop key={c.label} delay={delays[i] * fps}>
-            <IconCard icon={c.icon} label={c.label} sub={c.sub} />
+            <IconCard
+              icon={<LogoTile>{c.icon}</LogoTile>}
+              label={c.label}
+              sub={c.sub}
+            />
           </Pop>
         ))}
       </ContentArea>
