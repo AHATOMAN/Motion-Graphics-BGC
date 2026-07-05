@@ -1,6 +1,7 @@
 import React from "react";
 import { COLORS, DISPLAY, FONT } from "../theme";
 import { KineticText } from "./KineticText";
+import { LightSweep } from "./cinematic";
 
 // Every tile in the video shares these exact dimensions.
 export const CARD_WIDTH = 325;
@@ -18,10 +19,15 @@ export const IconCard: React.FC<{
     style={{
       width: CARD_WIDTH,
       height: CARD_HEIGHT,
-      background: COLORS.white,
+      // Frosted glass over the scene background
+      background: "rgba(255, 255, 255, 0.78)",
+      backdropFilter: "blur(18px)",
+      WebkitBackdropFilter: "blur(18px)",
       borderRadius: 28,
-      border: `1.5px solid ${COLORS.paleBlue}`,
-      boxShadow: "0 24px 48px -20px rgba(15, 23, 42, 0.18)",
+      border: "1.5px solid rgba(226, 232, 240, 0.9)",
+      // Soft ambient-occlusion shadow for physical weight
+      boxShadow:
+        "0 34px 64px -28px rgba(15, 23, 42, 0.28), 0 6px 18px rgba(15, 23, 42, 0.05)",
       padding: "30px 24px",
       display: "flex",
       flexDirection: "column",
@@ -92,11 +98,13 @@ export const BannerText: React.FC<{
   return (
     <div
       style={{
+        position: "relative",
         background: bg,
         color: COLORS.white,
         padding: "22px 56px",
         borderRadius: 999,
         boxShadow: `0 20px 44px -12px ${shadow}`,
+        overflow: "hidden",
       }}
     >
       <KineticText
@@ -110,6 +118,7 @@ export const BannerText: React.FC<{
           justifyContent: "center",
         }}
       />
+      <LightSweep periodInFrames={130} intensity={0.4} />
     </div>
   );
 };

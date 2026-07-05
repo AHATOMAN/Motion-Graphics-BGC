@@ -1,7 +1,9 @@
 import React from "react";
-import { TransitionSeries, linearTiming } from "@remotion/transitions";
+import { AbsoluteFill } from "remotion";
+import { TransitionSeries, springTiming } from "@remotion/transitions";
 import { fade } from "@remotion/transitions/fade";
-import { slide } from "@remotion/transitions/slide";
+import { cameraZoom } from "./components/cameraZoom";
+import { CinematicOverlay } from "./components/cinematic";
 import { Scene01Welcome, SCENE_01_SECONDS } from "./scenes/Scene01Welcome";
 import { Scene02About, SCENE_02_SECONDS } from "./scenes/Scene02About";
 import {
@@ -50,30 +52,38 @@ export const TOTAL_DURATION_IN_FRAMES =
 
 export const HseInduction: React.FC = () => {
   return (
-    <TransitionSeries>
-      {SCENES.map((scene, i) => {
-        const Comp = scene.component;
-        const elements = [
-          <TransitionSeries.Sequence
-            key={`scene-${i}`}
-            durationInFrames={scene.seconds * FPS}
-          >
-            <Comp />
-          </TransitionSeries.Sequence>,
-        ];
-        if (i < SCENES.length - 1) {
-          elements.push(
-            <TransitionSeries.Transition
-              key={`transition-${i}`}
-              presentation={
-                i % 3 === 1 ? slide({ direction: "from-right" }) : fade()
-              }
-              timing={linearTiming({ durationInFrames: TRANSITION_FRAMES })}
-            />,
-          );
-        }
-        return elements;
-      })}
-    </TransitionSeries>
+    <AbsoluteFill>
+      <TransitionSeries>
+        {SCENES.map((scene, i) => {
+          const Comp = scene.component;
+          const elements = [
+            <TransitionSeries.Sequence
+              key={`scene-${i}`}
+              durationInFrames={scene.seconds * FPS}
+            >
+              <Comp />
+            </TransitionSeries.Sequence>,
+          ];
+          if (i < SCENES.length - 1) {
+            elements.push(
+              <TransitionSeries.Transition
+                key={`transition-${i}`}
+                presentation={
+                  (i % 4 === 3
+                    ? fade()
+                    : cameraZoom()) as ReturnType<typeof cameraZoom>
+                }
+                timing={springTiming({
+                  config: { damping: 200 },
+                  durationInFrames: TRANSITION_FRAMES,
+                })}
+              />,
+            );
+          }
+          return elements;
+        })}
+      </TransitionSeries>
+      <CinematicOverlay />
+    </AbsoluteFill>
   );
 };

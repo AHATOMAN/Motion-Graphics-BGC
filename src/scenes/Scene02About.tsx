@@ -1,53 +1,91 @@
 import React from "react";
-import { COLORS, FONT } from "../theme";
-import { SceneFrame, ContentArea } from "../components/SceneFrame";
+import { COLORS, DISPLAY, FONT } from "../theme";
+import { SceneFrame } from "../components/SceneFrame";
 import { SubtitleBar } from "../components/SubtitleBar";
 import { SUBTITLES } from "../data/subtitles";
-import { FadeUp, Pop } from "../components/anim";
+import { Pop, FadeUp } from "../components/anim";
 import { VoiceOver } from "../components/VoiceOver";
 
 export const SCENE_02_SECONDS = 65;
 
 const chunks = SUBTITLES["scene-02"];
 
-const Milestone: React.FC<{ year: string; text: string }> = ({
-  year,
-  text,
-}) => (
+// Frosted-glass bento block
+const Bento: React.FC<{
+  span?: number;
+  children: React.ReactNode;
+  style?: React.CSSProperties;
+}> = ({ span = 1, children, style }) => (
   <div
     style={{
+      gridColumn: `span ${span}`,
+      background: "rgba(255, 255, 255, 0.75)",
+      backdropFilter: "blur(18px)",
+      WebkitBackdropFilter: "blur(18px)",
+      border: "1.5px solid rgba(226, 232, 240, 0.9)",
+      borderRadius: 26,
+      boxShadow:
+        "0 34px 64px -30px rgba(15, 23, 42, 0.25), 0 6px 18px rgba(15, 23, 42, 0.04)",
       display: "flex",
       flexDirection: "column",
       alignItems: "center",
-      gap: 10,
-      width: 340,
+      justifyContent: "center",
+      gap: 12,
+      padding: "20px 26px",
+      ...style,
     }}
   >
+    {children}
+  </div>
+);
+
+const Stat: React.FC<{ value: string; caption: string }> = ({
+  value,
+  caption,
+}) => (
+  <>
     <div
       style={{
-        fontFamily: FONT,
+        fontFamily: DISPLAY,
         fontWeight: 800,
-        fontSize: 62,
-        color: COLORS.red,
+        fontSize: 58,
+        letterSpacing: "-0.02em",
+        color: COLORS.brandRed,
       }}
     >
-      {year}
+      {value}
     </div>
     <div
       style={{
         fontFamily: FONT,
         fontWeight: 600,
-        fontSize: 28,
+        fontSize: 26,
         color: COLORS.text,
         textAlign: "center",
         lineHeight: 1.3,
       }}
     >
-      {text}
+      {caption}
     </div>
+  </>
+);
+
+const BlockTitle: React.FC<{ children: React.ReactNode }> = ({ children }) => (
+  <div
+    style={{
+      fontFamily: FONT,
+      fontWeight: 700,
+      fontSize: 24,
+      letterSpacing: "0.12em",
+      textTransform: "uppercase",
+      color: COLORS.muted,
+    }}
+  >
+    {children}
   </div>
 );
 
+const SECTORS = ["Power", "Water & Wastewater", "Renewable Energy"];
 const LIFECYCLE = [
   "BOOT",
   "Engineering",
@@ -59,118 +97,137 @@ const LIFECYCLE = [
   "Facilities Mgmt.",
 ];
 
-const SECTORS = ["Power", "Water & Wastewater", "Renewable Energy"];
-
 export const Scene02About: React.FC = () => {
   const fps = 30;
   return (
     <SceneFrame kicker="Who we are" title="About GCMS">
-      <ContentArea top={265} style={{ flexDirection: "column", gap: 38 }}>
-        {/* Sectors */}
-        <div style={{ display: "flex", gap: 26 }}>
-          {SECTORS.map((s, i) => (
-            <Pop key={s} delay={1 * fps + i * 8}>
-              <div
-                style={{
-                  fontFamily: FONT,
-                  fontWeight: 700,
-                  fontSize: 34,
-                  color: COLORS.white,
-                  background: COLORS.navy,
-                  padding: "14px 38px",
-                  borderRadius: 999,
-                }}
-              >
-                {s}
-              </div>
-            </Pop>
-          ))}
-        </div>
+      {/* Bento grid */}
+      <div
+        style={{
+          position: "absolute",
+          top: 275,
+          left: 100,
+          right: 100,
+          display: "grid",
+          gridTemplateColumns: "repeat(4, 1fr)",
+          gridTemplateRows: "185px 240px 104px",
+          gap: 20,
+        }}
+      >
+        {/* Row 1 — milestones & stats, revealed with the narration */}
+        <Pop delay={11.5 * fps}>
+          <Bento style={{ height: "100%" }}>
+            <Stat value="1963" caption="Established in the Sultanate of Oman" />
+          </Bento>
+        </Pop>
+        <Pop delay={13.8 * fps}>
+          <Bento style={{ height: "100%" }}>
+            <Stat value="1976" caption="Became a 100% Omani company" />
+          </Bento>
+        </Pop>
+        <Pop delay={17.9 * fps}>
+          <Bento style={{ height: "100%" }}>
+            <Stat value="BGC" caption="Member of Al Barami Group of Companies" />
+          </Bento>
+        </Pop>
+        <Pop delay={41.7 * fps}>
+          <Bento style={{ height: "100%" }}>
+            <Stat value="1,500+" caption="Workforce across all regions of Oman" />
+          </Bento>
+        </Pop>
 
-        {/* Timeline */}
-        <FadeUp delay={9 * fps}>
-          <div
-            style={{
-              display: "flex",
-              alignItems: "flex-start",
-              gap: 34,
-              background: COLORS.white,
-              borderRadius: 28,
-              padding: "34px 50px",
-              boxShadow: "0 18px 40px rgba(22, 51, 126, 0.14)",
-            }}
-          >
-            <Milestone year="1963" text="Established in the Sultanate of Oman" />
+        {/* Row 2 — sectors & lifecycle */}
+        <Pop delay={1 * fps} style={{ gridColumn: "span 2" }}>
+          <Bento style={{ height: "100%" }}>
+            <BlockTitle>Our industries</BlockTitle>
             <div
               style={{
-                alignSelf: "center",
-                width: 70,
-                height: 8,
-                background: COLORS.paleBlue,
-                borderRadius: 4,
+                display: "flex",
+                flexWrap: "wrap",
+                justifyContent: "center",
+                gap: 16,
               }}
-            />
-            <Milestone
-              year="1976"
-              text="100% Omani company — member of Al Barami Group"
-            />
+            >
+              {SECTORS.map((s) => (
+                <div
+                  key={s}
+                  style={{
+                    fontFamily: FONT,
+                    fontWeight: 700,
+                    fontSize: 32,
+                    color: COLORS.white,
+                    background: COLORS.brandNavy,
+                    padding: "14px 34px",
+                    borderRadius: 999,
+                  }}
+                >
+                  {s}
+                </div>
+              ))}
+            </div>
+          </Bento>
+        </Pop>
+        <Pop delay={21.4 * fps} style={{ gridColumn: "span 2" }}>
+          <Bento style={{ height: "100%" }}>
+            <BlockTitle>Entire project lifecycle</BlockTitle>
             <div
               style={{
-                alignSelf: "center",
-                width: 70,
-                height: 8,
-                background: COLORS.paleBlue,
-                borderRadius: 4,
+                display: "flex",
+                flexWrap: "wrap",
+                justifyContent: "center",
+                gap: 12,
+                maxWidth: 720,
               }}
-            />
-            <Milestone year="1,500+" text="Workforce across all regions of Oman" />
-          </div>
-        </FadeUp>
+            >
+              {LIFECYCLE.map((step, i) => (
+                <FadeUp key={step} delay={(21.8 + i * 1.1) * fps}>
+                  <div
+                    style={{
+                      fontFamily: FONT,
+                      fontWeight: 600,
+                      fontSize: 25,
+                      color: COLORS.navy,
+                      background: "rgba(255,255,255,0.9)",
+                      border: `2px solid ${COLORS.paleBlue}`,
+                      padding: "8px 22px",
+                      borderRadius: 999,
+                      whiteSpace: "nowrap",
+                    }}
+                  >
+                    {step}
+                  </div>
+                </FadeUp>
+              ))}
+            </div>
+          </Bento>
+        </Pop>
 
-        {/* Lifecycle chips */}
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            gap: 16,
-          }}
-        >
-          {LIFECYCLE.map((step, i) => (
-            <Pop key={step} delay={18 * fps + i * 30}>
-              <div
-                style={{
-                  fontFamily: FONT,
-                  fontWeight: 600,
-                  fontSize: 26,
-                  color: COLORS.navy,
-                  background: COLORS.white,
-                  border: `3px solid ${COLORS.paleBlue}`,
-                  padding: "10px 24px",
-                  borderRadius: 999,
-                  whiteSpace: "nowrap",
-                }}
-              >
-                {step}
-              </div>
-            </Pop>
-          ))}
-        </div>
-
-        {/* Commitment */}
-        <FadeUp delay={45 * fps}>
-          <div
+        {/* Row 3 — commitment band */}
+        <FadeUp delay={49.5 * fps} style={{ gridColumn: "span 4" }}>
+          <Bento
+            span={1}
             style={{
-              fontFamily: FONT,
-              fontWeight: 700,
-              fontSize: 38,
-              color: COLORS.red,
-              textAlign: "center",
+              height: "100%",
+              background: COLORS.brandNavy,
+              border: "none",
+              gridColumn: "span 1",
             }}
           >
-            A leader in Quality, Health, Safety &amp; Environmental Protection
-          </div>
+            <div
+              style={{
+                fontFamily: DISPLAY,
+                fontWeight: 800,
+                fontSize: 36,
+                letterSpacing: "-0.01em",
+                color: COLORS.white,
+                textAlign: "center",
+              }}
+            >
+              A leader in Quality, Health, Safety &amp; Environmental Protection
+            </div>
+          </Bento>
         </FadeUp>
-      </ContentArea>
+      </div>
       <VoiceOver file="scene-02.mp3" />
       <SubtitleBar chunks={chunks} />
     </SceneFrame>
