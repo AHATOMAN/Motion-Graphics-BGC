@@ -9,7 +9,9 @@ import { VoiceOver } from "../components/VoiceOver";
 
 export const SCENE_08_SECONDS = 13;
 
-const chunks = SUBTITLES["scene-08"];
+const chunks = SUBTITLES["scene-08"].filter(
+  (c) => !/report any hazards immediately/i.test(c.text),
+);
 
 const WarnTriangle: React.FC<{ children: React.ReactNode }> = ({ children }) => (
   <svg viewBox="0 0 120 120" width={120} height={120}>

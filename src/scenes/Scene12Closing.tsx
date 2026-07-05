@@ -1,22 +1,43 @@
 import React from "react";
-import { AbsoluteFill, interpolate, useCurrentFrame } from "remotion";
+import {
+  AbsoluteFill,
+  interpolate,
+  spring,
+  useCurrentFrame,
+  useVideoConfig,
+} from "remotion";
+import { ThreeCanvas } from "@remotion/three";
 import { COLORS, DISPLAY } from "../theme";
 import { KineticText } from "../components/KineticText";
 import { SubtitleBar } from "../components/SubtitleBar";
 import { SUBTITLES } from "../data/subtitles";
-import { FadeUp, Pop, EASE } from "../components/anim";
-import { Avatar } from "../components/People";
+import { FadeUp, EASE } from "../components/anim";
+import { Person3D, StudioLights, Platform } from "../components/Person3D";
 import { VoiceOver } from "../components/VoiceOver";
 import { GlobalLogo } from "../branding/GlobalLogo";
 import { Globe3D } from "../components/Globe3D";
 
 export const SCENE_12_SECONDS = 10;
 
-const chunks = SUBTITLES["scene-12"];
+const chunks = SUBTITLES["scene-12"].filter(
+  (c) => !/safety first/i.test(c.text),
+);
+
+const TEAM: {
+  shirt: string;
+  props: Partial<React.ComponentProps<typeof Person3D>>;
+}[] = [
+  { shirt: COLORS.orange, props: { helmet: 1, vest: 1 } },
+  { shirt: "#059669", props: { star: true } },
+  { shirt: "#1E3A8A", props: { lanyard: true } },
+  { shirt: "#2563EB", props: {} },
+];
+
+const X_POSITIONS = [-2.9, -0.97, 0.97, 2.9];
 
 export const Scene12Closing: React.FC = () => {
   const frame = useCurrentFrame();
-  const fps = 30;
+  const { fps } = useVideoConfig();
   const bannerScale = interpolate(frame, [6.2 * fps, 6.2 * fps + 20], [0, 1], {
     extrapolateLeft: "clamp",
     extrapolateRight: "clamp",
@@ -29,18 +50,6 @@ export const Scene12Closing: React.FC = () => {
         background: `linear-gradient(160deg, ${COLORS.navyDark} 0%, ${COLORS.brandNavy} 100%)`,
       }}
     >
-      {/* Persistent GLOBAL logo */}
-      <div
-        style={{
-          position: "absolute",
-          top: 52,
-          right: 90,
-          display: "flex",
-          justifyContent: "center",
-        }}
-      >
-        <GlobalLogo height={52} inverted />
-      </div>
       {/* 3D brand globe drifting in the background */}
       <div
         style={{
@@ -52,18 +61,10 @@ export const Scene12Closing: React.FC = () => {
       >
         <Globe3D size={520} />
       </div>
-      {/* soft shapes */}
-      <div
-        style={{
-          position: "absolute",
-          top: -220,
-          right: -180,
-          width: 560,
-          height: 560,
-          borderRadius: "50%",
-          background: "rgba(255,255,255,0.05)",
-        }}
-      />
+      {/* Persistent GLOBAL logo */}
+      <div style={{ position: "absolute", top: 52, right: 90 }}>
+        <GlobalLogo height={52} inverted />
+      </div>
       <div
         style={{
           position: "absolute",
@@ -79,8 +80,8 @@ export const Scene12Closing: React.FC = () => {
         style={{
           alignItems: "center",
           justifyContent: "center",
-          gap: 64,
-          paddingBottom: 120,
+          gap: 26,
+          paddingBottom: 110,
         }}
       >
         <FadeUp delay={10}>
@@ -88,7 +89,7 @@ export const Scene12Closing: React.FC = () => {
             style={{
               background: COLORS.white,
               borderRadius: 999,
-              padding: "26px 80px",
+              padding: "24px 76px",
               boxShadow: "0 30px 60px -20px rgba(0,0,0,0.5)",
             }}
           >
@@ -98,7 +99,7 @@ export const Scene12Closing: React.FC = () => {
               style={{
                 fontFamily: DISPLAY,
                 fontWeight: 800,
-                fontSize: 72,
+                fontSize: 68,
                 letterSpacing: "-0.02em",
                 color: COLORS.brandNavy,
                 justifyContent: "center",
@@ -106,15 +107,38 @@ export const Scene12Closing: React.FC = () => {
             />
           </div>
         </FadeUp>
-        <div style={{ display: "flex", gap: 46 }}>
-          {(["contractor", "employee", "visitor", "vendor"] as const).map(
-            (kind, i) => (
-              <Pop key={kind} delay={2 * fps + i * 10}>
-                <Avatar kind={kind} size={200} />
-              </Pop>
-            ),
-          )}
-        </div>
+        {/* 3D team waving */}
+        <ThreeCanvas
+          width={1300}
+          height={430}
+          style={{ width: 1300, height: 430 }}
+          camera={{ position: [0, 0.25, 7.6], fov: 32 }}
+        >
+          <StudioLights />
+          {TEAM.map((member, i) => {
+            const enter = spring({
+              frame: frame - (1.6 + i * 0.35) * fps,
+              fps,
+              config: { damping: 13, mass: 0.6, stiffness: 120 },
+            });
+            return (
+              <group
+                key={i}
+                position={[X_POSITIONS[i], -1.5, 0]}
+                scale={enter}
+              >
+                <Platform radius={0.95} color="#2B3E66" />
+                <Person3D
+                  shirt={member.shirt}
+                  swayPhase={frame / 24 + i * 1.3}
+                  wavePhase={frame / 4.5 + i * 0.8}
+                  rotationY={Math.sin(frame / 80 + i * 2) * 0.12}
+                  {...member.props}
+                />
+              </group>
+            );
+          })}
+        </ThreeCanvas>
         <div
           style={{
             scale: String(bannerScale),
@@ -123,9 +147,9 @@ export const Scene12Closing: React.FC = () => {
             color: COLORS.white,
             fontFamily: DISPLAY,
             fontWeight: 800,
-            fontSize: 56,
+            fontSize: 52,
             letterSpacing: "-0.01em",
-            padding: "20px 70px",
+            padding: "18px 64px",
             borderRadius: 999,
             boxShadow: "0 24px 48px -12px rgba(227,34,38,0.5)",
           }}

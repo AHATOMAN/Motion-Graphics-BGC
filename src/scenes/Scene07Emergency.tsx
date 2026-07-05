@@ -10,7 +10,9 @@ import { VoiceOver } from "../components/VoiceOver";
 
 export const SCENE_07_SECONDS = 14;
 
-const chunks = SUBTITLES["scene-07"];
+const chunks = SUBTITLES["scene-07"].filter(
+  (c) => !/in case of emergency/i.test(c.text),
+);
 
 const Legend: React.FC<{ color: string; label: string; symbol: string }> = ({
   color,

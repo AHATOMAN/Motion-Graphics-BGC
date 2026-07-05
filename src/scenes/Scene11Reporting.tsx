@@ -1,23 +1,27 @@
 import React from "react";
 import { interpolate, useCurrentFrame } from "remotion";
+import { ThreeCanvas } from "@remotion/three";
 import { COLORS, FONT } from "../theme";
 import { SceneFrame, ContentArea } from "../components/SceneFrame";
 import { SubtitleBar } from "../components/SubtitleBar";
 import { SUBTITLES } from "../data/subtitles";
 import { FadeUp, Pop } from "../components/anim";
 import { BannerText } from "../components/Card";
+import { Person3D, StudioLights, Platform } from "../components/Person3D";
 import { VoiceOver } from "../components/VoiceOver";
 
 export const SCENE_11_SECONDS = 13;
 
-const chunks = SUBTITLES["scene-11"];
+const chunks = SUBTITLES["scene-11"].filter(
+  (c) => !/near misses are incidents/i.test(c.text),
+);
 
-// Worker spots a falling object (near miss) and reports to a supervisor.
-const NearMiss: React.FC = () => {
+// 3D near-miss: a box falls off a rack beside the worker, who reports
+// it to the supervisor.
+const NearMiss3D: React.FC = () => {
   const frame = useCurrentFrame();
   const fps = 30;
-  // object falls between 1s and 2s
-  const fall = interpolate(frame, [1 * fps, 2 * fps], [0, 1], {
+  const fall = interpolate(frame, [1 * fps, 1.8 * fps], [0, 1], {
     extrapolateLeft: "clamp",
     extrapolateRight: "clamp",
   });
@@ -25,48 +29,116 @@ const NearMiss: React.FC = () => {
     extrapolateLeft: "clamp",
     extrapolateRight: "clamp",
   });
+  // Box drops with acceleration and tips over
+  const boxY = 2.6 - fall * fall * 2.35;
+  const boxTilt = fall * 0.9;
+
   return (
-    <svg viewBox="0 0 560 420" width={640} height={480}>
-      {/* shelf */}
-      <rect x={40} y={60} width={200} height={14} fill={COLORS.navy} />
-      <rect x={52} y={74} width={12} height={300} fill={COLORS.navy} />
-      {/* falling box */}
-      <g
+    <div style={{ position: "relative", width: 880, height: 560 }}>
+      <ThreeCanvas
+        width={880}
+        height={560}
+        style={{ width: 880, height: 560 }}
+        camera={{ position: [0, 0.3, 6.4], fov: 36 }}
+      >
+        <StudioLights />
+        <group position={[0, -1.5, 0]}>
+          <Platform radius={3.1} />
+          {/* storage rack */}
+          <group position={[-2.35, 0, -0.3]}>
+            {[0.05, 1.5, 2.6].map((y) => (
+              <mesh key={y} position={[0, y, 0]}>
+                <boxGeometry args={[1.5, 0.1, 1]} />
+                <meshStandardMaterial color="#94A3B8" roughness={0.6} />
+              </mesh>
+            ))}
+            {[-0.7, 0.7].map((x) => (
+              <mesh key={x} position={[x, 1.3, 0]}>
+                <boxGeometry args={[0.1, 2.7, 1]} />
+                <meshStandardMaterial color="#64748B" roughness={0.6} />
+              </mesh>
+            ))}
+            {/* box still on the shelf */}
+            <mesh position={[0.35, 1.83, 0]}>
+              <boxGeometry args={[0.55, 0.55, 0.55]} />
+              <meshStandardMaterial color="#C98A3B" roughness={0.7} />
+            </mesh>
+          </group>
+          {/* falling box */}
+          <mesh
+            position={[-1.35, Math.max(boxY, 0.31), 0.35]}
+            rotation={[0, 0.4, -boxTilt]}
+          >
+            <boxGeometry args={[0.6, 0.6, 0.6]} />
+            <meshStandardMaterial color="#B07A2F" roughness={0.7} />
+          </mesh>
+          {/* worker who noticed the near miss */}
+          <Person3D
+            shirt={COLORS.orange}
+            helmet={1}
+            vest={1}
+            position={[0.15, 0, 0.4]}
+            rotationY={0.9}
+            swayPhase={frame / 24}
+          />
+          {/* supervisor with clipboard */}
+          <group position={[2.15, 0, 0]}>
+            <Person3D
+              shirt="#1E3A8A"
+              lanyard
+              rotationY={-0.55}
+              swayPhase={frame / 24 + 2}
+            />
+            {/* clipboard */}
+            <mesh position={[-0.42, 1.05, 0.42]} rotation={[0.35, 0.4, 0]}>
+              <boxGeometry args={[0.34, 0.46, 0.04]} />
+              <meshStandardMaterial color="#ffffff" roughness={0.4} />
+            </mesh>
+          </group>
+        </group>
+      </ThreeCanvas>
+      {/* alert + report arrow overlays */}
+      <div
         style={{
-          translate: `0px ${fall * 250}px`,
-          rotate: `${fall * 38}deg`,
-          transformOrigin: "170px 40px",
+          position: "absolute",
+          left: 210,
+          top: 96,
+          opacity: alert,
+          scale: String(0.6 + 0.4 * alert),
         }}
       >
-        <rect x={145} y={14} width={54} height={46} rx={6} fill="#C98A3B" />
-        <rect x={145} y={32} width={54} height={6} fill="#A96F28" />
-      </g>
-      {/* alert mark */}
-      <g opacity={alert}>
-        <circle cx={262} cy={90} r={30} fill={COLORS.red} />
-        <text x={262} y={102} textAnchor="middle" fill="#fff" style={{ fontFamily: FONT, fontWeight: 800, fontSize: 42 }}>!</text>
-      </g>
-      {/* worker (noticing) */}
-      <circle cx={300} cy={190} r={30} fill="#F2C9A0" />
-      <path d="M 288 168 A 32 30 0 0 1 330 176 L 334 170 Q 312 142 284 162 Z" fill={COLORS.yellow} />
-      <path d="M 258 360 C 258 280 280 252 300 252 C 320 252 342 280 342 360 Z" fill={COLORS.orange} />
-      <rect x={258} y={286} width={84} height={12} fill="#FFE066" />
-      {/* supervisor with clipboard */}
-      <circle cx={462} cy={186} r={30} fill="#F2C9A0" />
-      <path d="M 432 182 A 30 30 0 0 1 492 182 L 486 164 Q 462 142 438 164 Z" fill="#5B4633" />
-      <path d="M 420 360 C 420 280 442 248 462 248 C 482 248 504 280 504 360 Z" fill={COLORS.navy} />
-      <rect x={398} y={266} width={52} height={68} rx={8} fill="#fff" stroke={COLORS.navy} strokeWidth={5} />
-      <line x1={408} y1={286} x2={440} y2={286} stroke={COLORS.paleBlue} strokeWidth={5} />
-      <line x1={408} y1={302} x2={440} y2={302} stroke={COLORS.paleBlue} strokeWidth={5} />
-      <line x1={408} y1={318} x2={432} y2={318} stroke={COLORS.paleBlue} strokeWidth={5} />
-      {/* speech arrow from worker to supervisor */}
-      <g opacity={alert}>
-        <path d="M 348 210 Q 396 190 414 206" stroke={COLORS.green} strokeWidth={8} fill="none" strokeLinecap="round" />
-        <path d="M 414 206 L 398 198 M 414 206 L 402 218" stroke={COLORS.green} strokeWidth={8} fill="none" strokeLinecap="round" />
-      </g>
-      {/* ground */}
-      <line x1={30} y1={374} x2={530} y2={374} stroke={COLORS.paleBlue} strokeWidth={8} />
-    </svg>
+        <svg viewBox="0 0 80 80" width={86} height={86}>
+          <circle cx={40} cy={40} r={34} fill={COLORS.red} />
+          <text
+            x={40}
+            y={54}
+            textAnchor="middle"
+            fill="#fff"
+            style={{ fontFamily: FONT, fontWeight: 800, fontSize: 46 }}
+          >
+            !
+          </text>
+        </svg>
+      </div>
+      <div style={{ position: "absolute", left: 485, top: 108, opacity: alert }}>
+        <svg viewBox="0 0 160 60" width={170} height={64}>
+          <path
+            d="M 10 40 Q 80 10 140 32"
+            stroke={COLORS.green}
+            strokeWidth={9}
+            fill="none"
+            strokeLinecap="round"
+          />
+          <path
+            d="M 140 32 L 118 20 M 140 32 L 122 46"
+            stroke={COLORS.green}
+            strokeWidth={9}
+            fill="none"
+            strokeLinecap="round"
+          />
+        </svg>
+      </div>
+    </div>
   );
 };
 
@@ -74,16 +146,16 @@ export const Scene11Reporting: React.FC = () => {
   const fps = 30;
   return (
     <SceneFrame kicker="See it, say it" title="Report Incidents & Near Misses">
-      <ContentArea top={290} style={{ gap: 80 }}>
+      <ContentArea top={280} style={{ gap: 70 }}>
         <FadeUp delay={10}>
-          <NearMiss />
+          <NearMiss3D />
         </FadeUp>
         <div
           style={{
             display: "flex",
             flexDirection: "column",
             gap: 40,
-            maxWidth: 700,
+            maxWidth: 660,
           }}
         >
           <Pop delay={3.5 * fps}>

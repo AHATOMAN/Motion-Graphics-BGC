@@ -9,7 +9,9 @@ import { VoiceOver } from "../components/VoiceOver";
 
 export const SCENE_09_SECONDS = 11;
 
-const chunks = SUBTITLES["scene-09"];
+const chunks = SUBTITLES["scene-09"].filter(
+  (c) => !/use your legs/i.test(c.text),
+);
 
 // Figure lifting a box the wrong way (bent back) or right way (squat).
 const Lifter: React.FC<{ good: boolean }> = ({ good }) => (
