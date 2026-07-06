@@ -1,10 +1,50 @@
 import React from "react";
+import {
+  interpolate,
+  spring,
+  useCurrentFrame,
+  useVideoConfig,
+} from "remotion";
 import { COLORS, DISPLAY, FONT } from "../theme";
 import { SceneFrame } from "../components/SceneFrame";
 import { SubtitleBar } from "../components/SubtitleBar";
 import { SUBTITLES } from "../data/subtitles";
-import { Pop, FadeUp } from "../components/anim";
+import { FadeUp } from "../components/anim";
 import { VoiceOver } from "../components/VoiceOver";
+
+// Bento block that is present from the start as a faint glass shell and
+// "activates" (full opacity + content pop) on its narration cue.
+const Reveal: React.FC<{
+  at: number; // seconds
+  span?: number;
+  children: React.ReactNode;
+}> = ({ at, span = 1, children }) => {
+  const frame = useCurrentFrame();
+  const { fps } = useVideoConfig();
+  const shell = interpolate(frame, [10, 24], [0, 0.3], {
+    extrapolateLeft: "clamp",
+    extrapolateRight: "clamp",
+  });
+  const t = spring({
+    frame: frame - at * fps,
+    fps,
+    config: { damping: 14, mass: 0.6, stiffness: 120 },
+  });
+  return (
+    <div
+      style={{
+        gridColumn: `span ${span}`,
+        opacity: shell + (1 - shell) * t,
+        scale: String(0.97 + 0.03 * t),
+        display: "flex",
+      }}
+    >
+      <div style={{ opacity: 0.25 + 0.75 * t, display: "flex", width: "100%" }}>
+        {children}
+      </div>
+    </div>
+  );
+};
 
 export const SCENE_02_SECONDS = 65;
 
@@ -115,30 +155,30 @@ export const Scene02About: React.FC = () => {
         }}
       >
         {/* Row 1 — milestones & stats, revealed with the narration */}
-        <Pop delay={11.5 * fps}>
-          <Bento style={{ height: "100%" }}>
+        <Reveal at={11.5}>
+          <Bento style={{ height: "100%", width: "100%" }}>
             <Stat value="1963" caption="Established in the Sultanate of Oman" />
           </Bento>
-        </Pop>
-        <Pop delay={13.8 * fps}>
-          <Bento style={{ height: "100%" }}>
+        </Reveal>
+        <Reveal at={13.8}>
+          <Bento style={{ height: "100%", width: "100%" }}>
             <Stat value="1976" caption="Became a 100% Omani company" />
           </Bento>
-        </Pop>
-        <Pop delay={17.9 * fps}>
-          <Bento style={{ height: "100%" }}>
+        </Reveal>
+        <Reveal at={17.9}>
+          <Bento style={{ height: "100%", width: "100%" }}>
             <Stat value="BGC" caption="Member of Al Barami Group of Companies" />
           </Bento>
-        </Pop>
-        <Pop delay={41.7 * fps}>
-          <Bento style={{ height: "100%" }}>
+        </Reveal>
+        <Reveal at={41.7}>
+          <Bento style={{ height: "100%", width: "100%" }}>
             <Stat value="1,500+" caption="Workforce across all regions of Oman" />
           </Bento>
-        </Pop>
+        </Reveal>
 
         {/* Row 2 — sectors & lifecycle */}
-        <Pop delay={1 * fps} style={{ gridColumn: "span 2" }}>
-          <Bento style={{ height: "100%" }}>
+        <Reveal at={1} span={2}>
+          <Bento style={{ height: "100%", width: "100%" }}>
             <BlockTitle>Our industries</BlockTitle>
             <div
               style={{
@@ -166,9 +206,9 @@ export const Scene02About: React.FC = () => {
               ))}
             </div>
           </Bento>
-        </Pop>
-        <Pop delay={21.4 * fps} style={{ gridColumn: "span 2" }}>
-          <Bento style={{ height: "100%" }}>
+        </Reveal>
+        <Reveal at={21.4} span={2}>
+          <Bento style={{ height: "100%", width: "100%" }}>
             <BlockTitle>Entire project lifecycle</BlockTitle>
             <div
               style={{
@@ -200,7 +240,7 @@ export const Scene02About: React.FC = () => {
               ))}
             </div>
           </Bento>
-        </Pop>
+        </Reveal>
 
         {/* Row 3 — commitment band */}
         <FadeUp delay={49.5 * fps} style={{ gridColumn: "span 4" }}>

@@ -1,13 +1,12 @@
 import React from "react";
 import { interpolate, useCurrentFrame } from "remotion";
-import { ThreeCanvas } from "@remotion/three";
 import { COLORS, FONT } from "../theme";
 import { SceneFrame, ContentArea } from "../components/SceneFrame";
 import { SubtitleBar } from "../components/SubtitleBar";
 import { SUBTITLES } from "../data/subtitles";
 import { FadeUp } from "../components/anim";
 import { BannerText } from "../components/Card";
-import { Person3D, StudioLights, Platform } from "../components/Person3D";
+import { PPEWorkerIllustration } from "../components/IllustratedPeople";
 import { VoiceOver } from "../components/VoiceOver";
 
 export const SCENE_06_SECONDS = 15;
@@ -42,36 +41,14 @@ export const Scene06PPE: React.FC = () => {
     boots: gearProgress(8.1),
   };
 
-  // Gentle turntable oscillation so the worker stays facing the camera
-  const turntable = Math.sin(frame / 55) * 0.4;
-
   return (
     <SceneFrame
       kicker="Personal Protective Equipment"
       title="Wear Your PPE — Every Time"
     >
-      <ContentArea top={270} style={{ gap: 80 }}>
+      <ContentArea top={280} style={{ gap: 110 }}>
         <FadeUp delay={8}>
-          <ThreeCanvas
-            width={640}
-            height={640}
-            style={{ width: 640, height: 640 }}
-            camera={{ position: [0, 0.2, 5.9], fov: 35 }}
-          >
-            <StudioLights />
-            <group position={[0, -1.35, 0]} rotation={[0, turntable, 0]}>
-              <Platform radius={1.4} />
-              <Person3D
-                shirt="#3D5FA8"
-                helmet={gear.hat}
-                goggles={gear.goggles}
-                vest={gear.vest}
-                gloves={gear.gloves}
-                boots={gear.boots}
-                swayPhase={frame / 24}
-              />
-            </group>
-          </ThreeCanvas>
+          <PPEWorkerIllustration width={300} gear={gear} />
         </FadeUp>
         <div
           style={{

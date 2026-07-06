@@ -33,12 +33,20 @@ const RuleCard: React.FC<{ index: number; title: string; desc: string }> = ({
 }) => {
   const frame = useCurrentFrame();
   const fps = 30;
-  // Exact narration timing of this rule's sentence (forced alignment).
+  // Faint shell visible from the start of the scene; the card activates
+  // at the exact narration timing of its rule (forced alignment).
+  const shell = interpolate(
+    frame,
+    [1.5 * fps + index * 3, 2.2 * fps + index * 3],
+    [0, 0.26],
+    { extrapolateLeft: "clamp", extrapolateRight: "clamp" },
+  );
   const start = RULE_TIMINGS[index].from * fps;
-  const t = interpolate(frame, [start, start + 16], [0, 1], {
+  const reveal = interpolate(frame, [start, start + 16], [0, 1], {
     extrapolateLeft: "clamp",
     extrapolateRight: "clamp",
   });
+  const cardOpacity = shell + (1 - shell) * reveal;
   // Highlight until the narrator moves on to the next rule
   const end =
     (index < RULE_TIMINGS.length - 1
@@ -62,8 +70,8 @@ const RuleCard: React.FC<{ index: number; title: string; desc: string }> = ({
         boxShadow: active
           ? "0 24px 48px -16px rgba(0, 0, 0, 0.45)"
           : "none",
-        opacity: t,
-        scale: String(0.8 + 0.2 * t + (active ? 0.04 : 0)),
+        opacity: cardOpacity,
+        scale: String(0.92 + 0.08 * reveal + (active ? 0.04 : 0)),
       }}
     >
       <div

@@ -1,18 +1,11 @@
 import React from "react";
-import {
-  AbsoluteFill,
-  interpolate,
-  spring,
-  useCurrentFrame,
-  useVideoConfig,
-} from "remotion";
-import { ThreeCanvas } from "@remotion/three";
+import { AbsoluteFill, interpolate, useCurrentFrame } from "remotion";
 import { COLORS, DISPLAY } from "../theme";
 import { KineticText } from "../components/KineticText";
 import { SubtitleBar } from "../components/SubtitleBar";
 import { SUBTITLES } from "../data/subtitles";
-import { FadeUp, EASE } from "../components/anim";
-import { Person3D, StudioLights, Platform } from "../components/Person3D";
+import { FadeUp, Pop, EASE } from "../components/anim";
+import { Persona, PersonaVariant } from "../components/IllustratedPeople";
 import { VoiceOver } from "../components/VoiceOver";
 import { GlobalLogo } from "../branding/GlobalLogo";
 import { Globe3D } from "../components/Globe3D";
@@ -23,21 +16,11 @@ const chunks = SUBTITLES["scene-12"].filter(
   (c) => !/safety first/i.test(c.text),
 );
 
-const TEAM: {
-  shirt: string;
-  props: Partial<React.ComponentProps<typeof Person3D>>;
-}[] = [
-  { shirt: COLORS.orange, props: { helmet: 1, vest: 1 } },
-  { shirt: "#059669", props: { star: true } },
-  { shirt: "#1E3A8A", props: { lanyard: true } },
-  { shirt: "#2563EB", props: {} },
-];
-
-const X_POSITIONS = [-2.9, -0.97, 0.97, 2.9];
+const TEAM: PersonaVariant[] = ["contractor", "employee", "visitor", "vendor"];
 
 export const Scene12Closing: React.FC = () => {
   const frame = useCurrentFrame();
-  const { fps } = useVideoConfig();
+  const fps = 30;
   const bannerScale = interpolate(frame, [6.2 * fps, 6.2 * fps + 20], [0, 1], {
     extrapolateLeft: "clamp",
     extrapolateRight: "clamp",
@@ -107,38 +90,14 @@ export const Scene12Closing: React.FC = () => {
             />
           </div>
         </FadeUp>
-        {/* 3D team waving */}
-        <ThreeCanvas
-          width={1300}
-          height={430}
-          style={{ width: 1300, height: 430 }}
-          camera={{ position: [0, 0.25, 7.6], fov: 32 }}
-        >
-          <StudioLights />
-          {TEAM.map((member, i) => {
-            const enter = spring({
-              frame: frame - (1.6 + i * 0.35) * fps,
-              fps,
-              config: { damping: 13, mass: 0.6, stiffness: 120 },
-            });
-            return (
-              <group
-                key={i}
-                position={[X_POSITIONS[i], -1.5, 0]}
-                scale={enter}
-              >
-                <Platform radius={0.95} color="#2B3E66" />
-                <Person3D
-                  shirt={member.shirt}
-                  swayPhase={frame / 24 + i * 1.3}
-                  wavePhase={frame / 4.5 + i * 0.8}
-                  rotationY={Math.sin(frame / 80 + i * 2) * 0.12}
-                  {...member.props}
-                />
-              </group>
-            );
-          })}
-        </ThreeCanvas>
+        {/* Illustrated team waving */}
+        <div style={{ display: "flex", gap: 110, alignItems: "flex-end" }}>
+          {TEAM.map((variant, i) => (
+            <Pop key={variant} delay={(1.6 + i * 0.35) * fps}>
+              <Persona variant={variant} width={172} wave phaseOffset={i * 0.8} />
+            </Pop>
+          ))}
+        </div>
         <div
           style={{
             scale: String(bannerScale),

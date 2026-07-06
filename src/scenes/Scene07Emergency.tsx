@@ -135,7 +135,7 @@ export const Scene07Emergency: React.FC = () => {
           <Pop delay={6.9 * fps}>
             <Legend color={COLORS.green} symbol="⚑" label="Assembly Points" />
           </Pop>
-          <FadeUp delay={8.9 * fps} style={{ marginTop: 26, maxWidth: 640 }}>
+          <FadeUp delay={8.9 * fps} style={{ marginTop: 26, maxWidth: 730 }}>
             <BannerText text="In case of emergency, follow the evacuation plan." />
           </FadeUp>
         </div>
