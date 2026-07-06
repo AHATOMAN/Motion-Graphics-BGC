@@ -1,69 +1,55 @@
 import React from "react";
-import { COLORS, FONT } from "../theme";
-import { SceneFrame, ContentArea } from "../components/SceneFrame";
+import { DISPLAY } from "../theme";
 import { SubtitleBar } from "../components/SubtitleBar";
 import { SUBTITLES } from "../data/subtitles";
-import { FadeUp, Pop } from "../components/anim";
-import { Persona, PersonaVariant } from "../components/IllustratedPeople";
+import { FadeUp } from "../components/anim";
+import { KineticText } from "../components/KineticText";
+import { FullScene, SceneTitle, Callout, Scrim } from "../components/FullScene";
 import { VoiceOver } from "../components/VoiceOver";
 
 export const SCENE_04_SECONDS = 20;
 
 const chunks = SUBTITLES["scene-04"];
 
-const ROLES: { variant: PersonaVariant; label: string }[] = [
-  { variant: "visitor", label: "Visitor" },
-  { variant: "contractor", label: "Contractor" },
-  { variant: "vendor", label: "Industry Vendor" },
-  { variant: "employee", label: "New Employee" },
-];
-
 export const Scene04Priority: React.FC = () => {
   const fps = 30;
   return (
-    <SceneFrame kicker="Our commitment to you" title="Safety Is Your Priority">
-      <ContentArea top={280} style={{ flexDirection: "column", gap: 24 }}>
-        <div style={{ display: "flex", gap: 120, alignItems: "flex-end" }}>
-          {ROLES.map((role, i) => (
-            <Pop key={role.variant} delay={(5.6 + i * 0.9) * fps}>
-              <div
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  gap: 14,
-                }}
-              >
-                <Persona variant={role.variant} width={190} phaseOffset={i * 1.7} />
-                <div
-                  style={{
-                    fontFamily: FONT,
-                    fontWeight: 700,
-                    fontSize: 36,
-                    color: COLORS.navy,
-                  }}
-                >
-                  {role.label}
-                </div>
-              </div>
-            </Pop>
-          ))}
-        </div>
+    <FullScene art="office.png" zoom="in">
+      <Scrim strength={0.45} />
+      <SceneTitle kicker="Our commitment to you" title="Safety Is Your Priority" />
+      {/* Role callouts pinned to the people in the scene */}
+      <Callout x={300} y={300} label="Visitor" delay={5.6 * fps} />
+      <Callout x={700} y={270} label="Industry Vendor" delay={6.5 * fps} />
+      <Callout x={1190} y={330} label="Contractor" delay={7.4 * fps} />
+      <Callout x={1560} y={280} label="New Employee" delay={8.3 * fps} />
+      <div
+        style={{
+          position: "absolute",
+          bottom: 176,
+          left: 0,
+          right: 0,
+          display: "flex",
+          justifyContent: "center",
+        }}
+      >
         <FadeUp delay={14.3 * fps}>
-          <div
+          <KineticText
+            text="Everyone deserves the knowledge to stay safe."
+            delay={14.3 * fps + 4}
             style={{
-              fontFamily: FONT,
-              fontWeight: 700,
-              fontSize: 42,
-              color: COLORS.brandRed,
+              fontFamily: DISPLAY,
+              fontWeight: 800,
+              fontSize: 52,
+              letterSpacing: "-0.01em",
+              color: "#ffffff",
+              textShadow: "0 4px 24px rgba(0,0,0,0.55)",
+              justifyContent: "center",
             }}
-          >
-            Everyone deserves the knowledge to stay safe.
-          </div>
+          />
         </FadeUp>
-      </ContentArea>
+      </div>
       <VoiceOver file="scene-04.mp3" />
       <SubtitleBar chunks={chunks} />
-    </SceneFrame>
+    </FullScene>
   );
 };

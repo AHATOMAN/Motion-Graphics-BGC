@@ -1,131 +1,59 @@
 import React from "react";
-import {
-  interpolate,
-  spring,
-  useCurrentFrame,
-  useVideoConfig,
-} from "remotion";
+import { AbsoluteFill, Sequence } from "remotion";
 import { COLORS, DISPLAY, FONT } from "../theme";
-import { SceneFrame } from "../components/SceneFrame";
 import { SubtitleBar } from "../components/SubtitleBar";
 import { SUBTITLES } from "../data/subtitles";
 import { FadeUp } from "../components/anim";
+import { KineticText } from "../components/KineticText";
+import { FullScene, SceneTitle, Callout, Scrim } from "../components/FullScene";
 import { VoiceOver } from "../components/VoiceOver";
-
-// Bento block that is present from the start as a faint glass shell and
-// "activates" (full opacity + content pop) on its narration cue.
-const Reveal: React.FC<{
-  at: number; // seconds
-  span?: number;
-  children: React.ReactNode;
-}> = ({ at, span = 1, children }) => {
-  const frame = useCurrentFrame();
-  const { fps } = useVideoConfig();
-  const shell = interpolate(frame, [10, 24], [0, 0.3], {
-    extrapolateLeft: "clamp",
-    extrapolateRight: "clamp",
-  });
-  const t = spring({
-    frame: frame - at * fps,
-    fps,
-    config: { damping: 14, mass: 0.6, stiffness: 120 },
-  });
-  return (
-    <div
-      style={{
-        gridColumn: `span ${span}`,
-        opacity: shell + (1 - shell) * t,
-        scale: String(0.97 + 0.03 * t),
-        display: "flex",
-      }}
-    >
-      <div style={{ opacity: 0.25 + 0.75 * t, display: "flex", width: "100%" }}>
-        {children}
-      </div>
-    </div>
-  );
-};
 
 export const SCENE_02_SECONDS = 65;
 
 const chunks = SUBTITLES["scene-02"];
+const fps = 30;
 
-// Frosted-glass bento block
-const Bento: React.FC<{
-  span?: number;
-  children: React.ReactNode;
-  style?: React.CSSProperties;
-}> = ({ span = 1, children, style }) => (
-  <div
-    style={{
-      gridColumn: `span ${span}`,
-      background: "rgba(255, 255, 255, 0.75)",
-      backdropFilter: "blur(18px)",
-      WebkitBackdropFilter: "blur(18px)",
-      border: "1.5px solid rgba(226, 232, 240, 0.9)",
-      borderRadius: 26,
-      boxShadow:
-        "0 34px 64px -30px rgba(15, 23, 42, 0.25), 0 6px 18px rgba(15, 23, 42, 0.04)",
-      display: "flex",
-      flexDirection: "column",
-      alignItems: "center",
-      justifyContent: "center",
-      gap: 12,
-      padding: "20px 26px",
-      ...style,
-    }}
-  >
-    {children}
-  </div>
-);
+// Narration beats (forced alignment): sectors 0.8-10.8, history 11.5-20.7,
+// lifecycle 21.4-40.8, workforce 41.7-49, commitment 49.5-63.4
+const BEAT_HISTORY = 11.5;
+const BEAT_WORKFORCE = 41.7;
+const BEAT_COMMIT = 49.5;
 
-const Stat: React.FC<{ value: string; caption: string }> = ({
-  value,
-  caption,
-}) => (
-  <>
-    <div
-      style={{
-        fontFamily: DISPLAY,
-        fontWeight: 800,
-        fontSize: 58,
-        letterSpacing: "-0.02em",
-        color: COLORS.brandRed,
-      }}
-    >
-      {value}
+const Milestone: React.FC<{
+  at: number;
+  value: string;
+  caption: string;
+}> = ({ at, value, caption }) => (
+  <FadeUp delay={at * fps}>
+    <div style={{ display: "flex", alignItems: "baseline", gap: 26 }}>
+      <div
+        style={{
+          fontFamily: DISPLAY,
+          fontWeight: 800,
+          fontSize: 92,
+          letterSpacing: "-0.02em",
+          color: COLORS.brandRed,
+          minWidth: 300,
+        }}
+      >
+        {value}
+      </div>
+      <div
+        style={{
+          fontFamily: FONT,
+          fontWeight: 600,
+          fontSize: 34,
+          color: COLORS.text,
+          lineHeight: 1.25,
+          maxWidth: 560,
+        }}
+      >
+        {caption}
+      </div>
     </div>
-    <div
-      style={{
-        fontFamily: FONT,
-        fontWeight: 600,
-        fontSize: 26,
-        color: COLORS.text,
-        textAlign: "center",
-        lineHeight: 1.3,
-      }}
-    >
-      {caption}
-    </div>
-  </>
+  </FadeUp>
 );
 
-const BlockTitle: React.FC<{ children: React.ReactNode }> = ({ children }) => (
-  <div
-    style={{
-      fontFamily: FONT,
-      fontWeight: 700,
-      fontSize: 24,
-      letterSpacing: "0.12em",
-      textTransform: "uppercase",
-      color: COLORS.muted,
-    }}
-  >
-    {children}
-  </div>
-);
-
-const SECTORS = ["Power", "Water & Wastewater", "Renewable Energy"];
 const LIFECYCLE = [
   "BOOT",
   "Engineering",
@@ -138,138 +66,168 @@ const LIFECYCLE = [
 ];
 
 export const Scene02About: React.FC = () => {
-  const fps = 30;
   return (
-    <SceneFrame kicker="Who we are" title="About GCMS">
-      {/* Bento grid */}
-      <div
-        style={{
-          position: "absolute",
-          top: 275,
-          left: 100,
-          right: 100,
-          display: "grid",
-          gridTemplateColumns: "repeat(4, 1fr)",
-          gridTemplateRows: "185px 240px 104px",
-          gap: 20,
-        }}
-      >
-        {/* Row 1 — milestones & stats, revealed with the narration */}
-        <Reveal at={11.5}>
-          <Bento style={{ height: "100%", width: "100%" }}>
-            <Stat value="1963" caption="Established in the Sultanate of Oman" />
-          </Bento>
-        </Reveal>
-        <Reveal at={13.8}>
-          <Bento style={{ height: "100%", width: "100%" }}>
-            <Stat value="1976" caption="Became a 100% Omani company" />
-          </Bento>
-        </Reveal>
-        <Reveal at={17.9}>
-          <Bento style={{ height: "100%", width: "100%" }}>
-            <Stat value="BGC" caption="Member of Al Barami Group of Companies" />
-          </Bento>
-        </Reveal>
-        <Reveal at={41.7}>
-          <Bento style={{ height: "100%", width: "100%" }}>
-            <Stat value="1,500+" caption="Workforce across all regions of Oman" />
-          </Bento>
-        </Reveal>
+    <AbsoluteFill>
+      {/* Beat 1 — industries over the Oman landscape */}
+      <Sequence durationInFrames={BEAT_HISTORY * fps}>
+        <FullScene art="landscape.png" zoom="in">
+          <SceneTitle kicker="Who we are" title="About GCMS" />
+          <Callout x={250} y={560} label="Power" delay={1.5 * fps} />
+          <Callout
+            x={430}
+            y={430}
+            label="Water & Wastewater"
+            delay={3.5 * fps}
+          />
+          <Callout
+            x={1350}
+            y={480}
+            label="Renewable Energy"
+            delay={5.5 * fps}
+          />
+        </FullScene>
+      </Sequence>
 
-        {/* Row 2 — sectors & lifecycle */}
-        <Reveal at={1} span={2}>
-          <Bento style={{ height: "100%", width: "100%" }}>
-            <BlockTitle>Our industries</BlockTitle>
-            <div
-              style={{
-                display: "flex",
-                flexWrap: "wrap",
-                justifyContent: "center",
-                gap: 16,
-              }}
-            >
-              {SECTORS.map((s) => (
-                <div
-                  key={s}
-                  style={{
-                    fontFamily: FONT,
-                    fontWeight: 700,
-                    fontSize: 32,
-                    color: COLORS.white,
-                    background: COLORS.brandNavy,
-                    padding: "14px 34px",
-                    borderRadius: 999,
-                  }}
-                >
-                  {s}
-                </div>
-              ))}
-            </div>
-          </Bento>
-        </Reveal>
-        <Reveal at={21.4} span={2}>
-          <Bento style={{ height: "100%", width: "100%" }}>
-            <BlockTitle>Entire project lifecycle</BlockTitle>
-            <div
-              style={{
-                display: "flex",
-                flexWrap: "wrap",
-                justifyContent: "center",
-                gap: 12,
-                maxWidth: 720,
-              }}
-            >
-              {LIFECYCLE.map((step, i) => (
-                <FadeUp key={step} delay={(21.8 + i * 1.1) * fps}>
-                  <div
-                    style={{
-                      fontFamily: FONT,
-                      fontWeight: 600,
-                      fontSize: 25,
-                      color: COLORS.navy,
-                      background: "rgba(255,255,255,0.9)",
-                      border: `2px solid ${COLORS.paleBlue}`,
-                      padding: "8px 22px",
-                      borderRadius: 999,
-                      whiteSpace: "nowrap",
-                    }}
-                  >
-                    {step}
-                  </div>
-                </FadeUp>
-              ))}
-            </div>
-          </Bento>
-        </Reveal>
-
-        {/* Row 3 — commitment band */}
-        <FadeUp delay={49.5 * fps} style={{ gridColumn: "span 4" }}>
-          <Bento
-            span={1}
+      {/* Beat 2 — history & lifecycle over the office */}
+      <Sequence from={BEAT_HISTORY * fps} durationInFrames={(BEAT_WORKFORCE - BEAT_HISTORY) * fps}>
+        <FullScene art="office.png" zoom="in">
+          <Scrim from="left" strength={0.62} />
+          <div
             style={{
-              height: "100%",
-              background: COLORS.brandNavy,
-              border: "none",
-              gridColumn: "span 1",
+              position: "absolute",
+              top: 150,
+              left: 100,
+              display: "flex",
+              flexDirection: "column",
+              gap: 44,
             }}
           >
-            <div
+            <Milestone at={0.2} value="1963" caption="Established in the Sultanate of Oman" />
+            <Milestone at={2.3} value="1976" caption="Became a 100% Omani company" />
+            <Milestone at={6.4} value="BGC" caption="Member of Al Barami Group of Companies" />
+            <FadeUp delay={9.9 * fps}>
+              <div
+                style={{
+                  display: "flex",
+                  flexWrap: "wrap",
+                  gap: 14,
+                  maxWidth: 900,
+                }}
+              >
+                {LIFECYCLE.map((step, i) => (
+                  <FadeUp key={step} delay={(10.2 + i * 1.1) * fps}>
+                    <div
+                      style={{
+                        fontFamily: FONT,
+                        fontWeight: 700,
+                        fontSize: 27,
+                        color: "#ffffff",
+                        background: COLORS.brandNavy,
+                        padding: "10px 26px",
+                        borderRadius: 999,
+                        whiteSpace: "nowrap",
+                        boxShadow: "0 10px 24px -8px rgba(15,23,42,0.4)",
+                      }}
+                    >
+                      {step}
+                    </div>
+                  </FadeUp>
+                ))}
+              </div>
+            </FadeUp>
+          </div>
+        </FullScene>
+      </Sequence>
+
+      {/* Beat 3 — workforce stat frame (reference layout) */}
+      <Sequence from={BEAT_WORKFORCE * fps} durationInFrames={(BEAT_COMMIT - BEAT_WORKFORCE) * fps}>
+        <FullScene art="workforce.png" zoom="out">
+          <Scrim from="left" strength={0.5} />
+          <div
+            style={{
+              position: "absolute",
+              top: 165,
+              left: 110,
+              display: "flex",
+              flexDirection: "column",
+              gap: 8,
+              maxWidth: 820,
+            }}
+          >
+            <KineticText
+              text="1,500+"
+              delay={6}
               style={{
                 fontFamily: DISPLAY,
                 fontWeight: 800,
-                fontSize: 36,
-                letterSpacing: "-0.01em",
-                color: COLORS.white,
-                textAlign: "center",
+                fontSize: 170,
+                letterSpacing: "-0.03em",
+                color: COLORS.text,
+                lineHeight: 1,
               }}
-            >
-              A leader in Quality, Health, Safety &amp; Environmental Protection
-            </div>
-          </Bento>
-        </FadeUp>
-      </div>
+            />
+            <KineticText
+              text="WORKFORCE"
+              delay={14}
+              stagger={4}
+              style={{
+                fontFamily: DISPLAY,
+                fontWeight: 800,
+                fontSize: 96,
+                letterSpacing: "-0.01em",
+                color: COLORS.text,
+                lineHeight: 1.05,
+              }}
+            />
+            <KineticText
+              text="spread across all regions of the Sultanate of Oman"
+              delay={24}
+              stagger={2}
+              style={{
+                fontFamily: FONT,
+                fontWeight: 700,
+                fontSize: 42,
+                color: "#334155",
+                lineHeight: 1.3,
+                textShadow: "0 2px 14px rgba(255,255,255,0.9)",
+              }}
+            />
+          </div>
+        </FullScene>
+      </Sequence>
+
+      {/* Beat 4 — QHSE commitment over the team */}
+      <Sequence from={BEAT_COMMIT * fps}>
+        <FullScene art="team.png" zoom="in" dim={0.3}>
+          <AbsoluteFill
+            style={{
+              alignItems: "center",
+              justifyContent: "center",
+              paddingBottom: 120,
+            }}
+          >
+            <KineticText
+              text="A leader in Quality, Health, Safety & Environmental Protection"
+              delay={8}
+              stagger={3}
+              style={{
+                fontFamily: DISPLAY,
+                fontWeight: 800,
+                fontSize: 72,
+                letterSpacing: "-0.02em",
+                color: "#ffffff",
+                justifyContent: "center",
+                textAlign: "center",
+                maxWidth: 1400,
+                textShadow: "0 6px 30px rgba(0,0,0,0.5)",
+              }}
+            />
+          </AbsoluteFill>
+        </FullScene>
+      </Sequence>
+
       <VoiceOver file="scene-02.mp3" />
       <SubtitleBar chunks={chunks} />
-    </SceneFrame>
+    </AbsoluteFill>
   );
 };

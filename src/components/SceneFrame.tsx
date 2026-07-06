@@ -1,7 +1,7 @@
 import React from "react";
 import { AbsoluteFill, useCurrentFrame } from "remotion";
 import { COLORS, DISPLAY, FONT } from "../theme";
-import { GlobalLogo } from "../branding/GlobalLogo";
+import { LogoLockup } from "../branding/LogoLockup";
 import { KineticText } from "./KineticText";
 import { LightSweep } from "./cinematic";
 import { FadeUp } from "./anim";
@@ -94,9 +94,9 @@ export const SceneFrame: React.FC<{
 
       {/* Content layer (pushes gently toward camera) */}
       <AbsoluteFill style={{ scale: String(contentScale) }}>
-        {/* Persistent GLOBAL logo */}
-        <div style={{ position: "absolute", top: 52, right: 90 }}>
-          <GlobalLogo height={52} inverted={dark} />
+        {/* Persistent brand lockup */}
+        <div style={{ position: "absolute", top: 44, right: 64 }}>
+          <LogoLockup height={62} />
         </div>
 
         {/* Header */}
