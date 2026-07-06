@@ -70,7 +70,7 @@ export const Scene02About: React.FC = () => {
     <AbsoluteFill>
       {/* Beat 1 — industries over the Oman landscape */}
       <Sequence durationInFrames={BEAT_HISTORY * fps}>
-        <FullScene art="landscape.png" zoom="in">
+        <FullScene clip="landscape.mp4">
           <SceneTitle kicker="Who we are" title="About GCMS" />
           <Callout x={250} y={560} label="Power" delay={1.5 * fps} />
           <Callout
@@ -90,7 +90,7 @@ export const Scene02About: React.FC = () => {
 
       {/* Beat 2 — history & lifecycle over the office */}
       <Sequence from={BEAT_HISTORY * fps} durationInFrames={(BEAT_WORKFORCE - BEAT_HISTORY) * fps}>
-        <FullScene art="office.png" zoom="in">
+        <FullScene clip="office.mp4">
           <Scrim from="left" strength={0.62} />
           <div
             style={{
@@ -141,7 +141,7 @@ export const Scene02About: React.FC = () => {
 
       {/* Beat 3 — workforce stat frame (reference layout) */}
       <Sequence from={BEAT_WORKFORCE * fps} durationInFrames={(BEAT_COMMIT - BEAT_WORKFORCE) * fps}>
-        <FullScene art="workforce.png" zoom="out">
+        <FullScene clip="workforce.mp4">
           <Scrim from="left" strength={0.5} />
           <div
             style={{
@@ -198,7 +198,7 @@ export const Scene02About: React.FC = () => {
 
       {/* Beat 4 — QHSE commitment over the team */}
       <Sequence from={BEAT_COMMIT * fps}>
-        <FullScene art="team.png" zoom="in" dim={0.3}>
+        <FullScene clip="team.mp4" dim={0.3}>
           <AbsoluteFill
             style={{
               alignItems: "center",

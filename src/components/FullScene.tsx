@@ -3,6 +3,8 @@ import {
   AbsoluteFill,
   Img,
   interpolate,
+  Loop,
+  OffthreadVideo,
   staticFile,
   useCurrentFrame,
 } from "remotion";
@@ -11,34 +13,54 @@ import { LogoLockup } from "../branding/LogoLockup";
 import { KineticText } from "./KineticText";
 import { FadeUp } from "./anim";
 
-// Full-bleed illustrated scene (reference explainer-video style):
-// the artwork fills the frame with a slow camera drift, the brand
+const CLIP_FRAMES = 8 * 30; // all animated scene clips are 8s @ 30fps
+
+// Full-bleed illustrated scene (reference explainer-video style).
+// With `clip`, the background is a looping animated video of the scene;
+// otherwise the still artwork with a slow camera drift. The brand
 // lockup sits top-right, and content overlays live on the scene.
 export const FullScene: React.FC<{
-  art: string;
+  art?: string;
+  clip?: string;
   zoom?: "in" | "out";
   blur?: number;
   dim?: number; // 0..1 dark overlay for busy artwork under text
   children: React.ReactNode;
-}> = ({ art, zoom = "in", blur = 0, dim = 0, children }) => {
+}> = ({ art, clip, zoom = "in", blur = 0, dim = 0, children }) => {
   const frame = useCurrentFrame();
   const drift = Math.min(frame * 0.00014, 0.14);
   const scale = zoom === "in" ? 1.04 + drift : 1.18 - drift;
 
   return (
     <AbsoluteFill style={{ background: COLORS.lightBg, overflow: "hidden" }}>
-      <Img
-        src={staticFile(`art/${art}`)}
-        style={{
-          position: "absolute",
-          width: "100%",
-          height: "100%",
-          objectFit: "cover",
-          scale: String(scale),
-          translate: `0px ${-frame * 0.02}px`,
-          filter: blur > 0 ? `blur(${blur}px)` : undefined,
-        }}
-      />
+      {clip ? (
+        <Loop durationInFrames={CLIP_FRAMES}>
+          <OffthreadVideo
+            muted
+            src={staticFile(`art/clips/${clip}`)}
+            style={{
+              position: "absolute",
+              width: "100%",
+              height: "100%",
+              objectFit: "cover",
+              filter: blur > 0 ? `blur(${blur}px)` : undefined,
+            }}
+          />
+        </Loop>
+      ) : (
+        <Img
+          src={staticFile(`art/${art}`)}
+          style={{
+            position: "absolute",
+            width: "100%",
+            height: "100%",
+            objectFit: "cover",
+            scale: String(scale),
+            translate: `0px ${-frame * 0.02}px`,
+            filter: blur > 0 ? `blur(${blur}px)` : undefined,
+          }}
+        />
+      )}
       {dim > 0 ? (
         <AbsoluteFill style={{ background: `rgba(11, 18, 36, ${dim})` }} />
       ) : null}

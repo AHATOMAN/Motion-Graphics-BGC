@@ -15,7 +15,7 @@ const chunks = SUBTITLES["scene-01"];
 
 export const Scene01Welcome: React.FC = () => {
   return (
-    <FullScene art="landscape.png" zoom="in">
+    <FullScene clip="landscape.mp4">
       {/* Welcome lockup floating in the sky area of the artwork */}
       <AbsoluteFill style={{ alignItems: "center" }}>
         <div

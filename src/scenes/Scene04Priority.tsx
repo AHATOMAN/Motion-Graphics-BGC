@@ -14,14 +14,14 @@ const chunks = SUBTITLES["scene-04"];
 export const Scene04Priority: React.FC = () => {
   const fps = 30;
   return (
-    <FullScene art="office.png" zoom="in">
+    <FullScene clip="office.mp4">
       <Scrim strength={0.45} />
       <SceneTitle kicker="Our commitment to you" title="Safety Is Your Priority" />
       {/* Role callouts pinned to the people in the scene */}
       <Callout x={300} y={300} label="Visitor" delay={5.6 * fps} />
-      <Callout x={700} y={270} label="Industry Vendor" delay={6.5 * fps} />
-      <Callout x={1190} y={330} label="Contractor" delay={7.4 * fps} />
-      <Callout x={1560} y={280} label="New Employee" delay={8.3 * fps} />
+      <Callout x={600} y={260} label="Industry Vendor" delay={6.5 * fps} />
+      <Callout x={1250} y={330} label="Contractor" delay={7.4 * fps} />
+      <Callout x={1520} y={640} label="New Employee" delay={8.3 * fps} />
       <div
         style={{
           position: "absolute",

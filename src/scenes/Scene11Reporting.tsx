@@ -24,7 +24,7 @@ export const Scene11Reporting: React.FC = () => {
   const blink = Math.sin(frame / 4) * 0.5 + 0.5;
 
   return (
-    <FullScene art="nearmiss.png" zoom="in">
+    <FullScene clip="nearmiss.mp4">
       <Scrim strength={0.62} />
       <SceneTitle kicker="See it, say it" title="Report Incidents & Near Misses" light maxWidth={1450} />
       {/* Alert badge over the falling box */}

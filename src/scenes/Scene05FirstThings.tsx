@@ -11,7 +11,7 @@ const chunks = SUBTITLES["scene-05"];
 export const Scene05FirstThings: React.FC = () => {
   const fps = 30;
   return (
-    <FullScene art="reception.png" zoom="in">
+    <FullScene clip="reception.mp4">
       <SceneTitle kicker="Starting off right" title="First Things First!" />
       <Callout
         x={880}
@@ -21,8 +21,8 @@ export const Scene05FirstThings: React.FC = () => {
         delay={4.6 * fps}
       />
       <Callout
-        x={330}
-        y={330}
+        x={210}
+        y={240}
         label="Your Host Assists You"
         sub="Ask them any questions"
         delay={10.3 * fps}

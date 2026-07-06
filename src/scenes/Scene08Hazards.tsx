@@ -15,7 +15,7 @@ const chunks = SUBTITLES["scene-08"].filter(
 export const Scene08Hazards: React.FC = () => {
   const fps = 30;
   return (
-    <FullScene art="hazards.png" zoom="in">
+    <FullScene clip="hazards.mp4">
       <Scrim strength={0.42} />
       <SceneTitle kicker="Stay alert" title="Hazard Identification" light />
       <Callout x={430} y={560} label="Slippery Floors" tone="alert" delay={1.5 * fps} />

@@ -40,7 +40,7 @@ export const SubtitleBar: React.FC<{ chunks: SubtitleChunk[] }> = ({
             key={i}
             style={{
               position: "absolute",
-              bottom: 44,
+              bottom: 30,
               left: 0,
               right: 0,
               display: "flex",
@@ -50,18 +50,18 @@ export const SubtitleBar: React.FC<{ chunks: SubtitleChunk[] }> = ({
           >
             <div
               style={{
-                maxWidth: 1300,
-                background: "rgba(15, 23, 42, 0.66)",
+                maxWidth: 1200,
+                background: "rgba(15, 23, 42, 0.76)",
                 backdropFilter: "blur(12px)",
                 WebkitBackdropFilter: "blur(12px)",
                 color: COLORS.white,
                 fontFamily: FONT,
                 fontWeight: 500,
-                fontSize: 28,
+                fontSize: 26,
                 lineHeight: 1.4,
                 textAlign: "center",
-                padding: "10px 32px",
-                borderRadius: 14,
+                padding: "8px 28px",
+                borderRadius: 12,
               }}
             >
               {chunk.text}

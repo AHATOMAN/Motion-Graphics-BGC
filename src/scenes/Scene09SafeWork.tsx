@@ -59,7 +59,7 @@ const Verdict: React.FC<{ x: number; y: number; good: boolean; at: number }> = (
 export const Scene09SafeWork: React.FC = () => {
   const fps = 30;
   return (
-    <FullScene art="lifting.png" zoom="in">
+    <FullScene clip="lifting.mp4">
       <SceneTitle kicker="Do it the right way" title="Safe Work Practices" light />
       <Verdict x={500} y={420} good={false} at={1.5} />
       <Verdict x={1300} y={420} good at={3.5} />

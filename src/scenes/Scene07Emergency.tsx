@@ -15,22 +15,13 @@ const chunks = SUBTITLES["scene-07"].filter(
 export const Scene07Emergency: React.FC = () => {
   const fps = 30;
   return (
-    <FullScene art="evacuation.png" zoom="in">
+    <FullScene clip="evacuation.mp4">
       <Scrim strength={0.4} />
       <SceneTitle kicker="Be prepared" title="Emergency Procedures" />
       <Callout x={1450} y={330} label="Emergency Exit" tone="positive" delay={1.5 * fps} />
       <Callout x={40} y={430} label="Fire Extinguisher" tone="alert" delay={4.4 * fps} />
       <Callout x={165} y={310} label="First-Aid Kit" tone="positive" delay={6 * fps} />
-      <div
-        style={{
-          position: "absolute",
-          bottom: 176,
-          left: 0,
-          right: 0,
-          display: "flex",
-          justifyContent: "center",
-        }}
-      >
+      <div style={{ position: "absolute", top: 246, left: 90 }}>
         <FadeUp delay={8.9 * fps}>
           <BannerText text="In case of emergency, follow the evacuation plan." />
         </FadeUp>

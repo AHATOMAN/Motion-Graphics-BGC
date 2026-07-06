@@ -24,7 +24,7 @@ export const Scene12Closing: React.FC = () => {
   });
 
   return (
-    <FullScene art="team.png" zoom="out" dim={0.12}>
+    <FullScene clip="team.mp4" dim={0.12}>
       <div
         style={{
           position: "absolute",
