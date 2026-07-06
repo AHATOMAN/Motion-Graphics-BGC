@@ -96,7 +96,7 @@ export const SceneFrame: React.FC<{
       <AbsoluteFill style={{ scale: String(contentScale) }}>
         {/* Persistent brand lockup */}
         <div style={{ position: "absolute", top: 44, right: 64 }}>
-          <LogoLockup height={62} />
+          <LogoLockup height={76} />
         </div>
 
         {/* Header */}

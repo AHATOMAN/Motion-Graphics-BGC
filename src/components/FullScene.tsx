@@ -45,7 +45,7 @@ export const FullScene: React.FC<{
       {children}
       {/* Brand lockup — always on top, like the reference */}
       <div style={{ position: "absolute", top: 44, right: 64 }}>
-        <LogoLockup height={62} />
+        <LogoLockup height={76} />
       </div>
     </AbsoluteFill>
   );
