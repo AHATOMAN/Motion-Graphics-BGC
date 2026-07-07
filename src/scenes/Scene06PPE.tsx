@@ -29,25 +29,26 @@ export const Scene06PPE: React.FC = () => {
   const fps = 30;
 
   return (
-    <FullScene clip="locker.mp4">
+    <FullScene clip="locker2.mp4">
       <SceneTitle
         kicker="Personal Protective Equipment"
         title="Wear Your PPE — Every Time"
       />
-      {/* Checklist on a frosted panel over the lockers */}
+      {/* Checklist on a frosted panel in the clear right area (worker is
+          on the left in the artwork, so nothing overlaps him) */}
       <div
         style={{
           position: "absolute",
-          top: 330,
-          right: 110,
-          background: "rgba(255, 255, 255, 0.88)",
+          top: 300,
+          right: 150,
+          background: "rgba(255, 255, 255, 0.9)",
           backdropFilter: "blur(10px)",
           WebkitBackdropFilter: "blur(10px)",
           borderRadius: 24,
-          padding: "34px 44px",
+          padding: "34px 52px",
           display: "flex",
           flexDirection: "column",
-          gap: 22,
+          gap: 24,
           boxShadow: "0 24px 54px -18px rgba(15,23,42,0.35)",
         }}
       >
