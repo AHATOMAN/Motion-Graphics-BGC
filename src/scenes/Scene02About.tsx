@@ -175,18 +175,7 @@ const HistoryTimeline: React.FC = () => {
       <TimelineNode
         x={1360}
         at={6.4}
-        top={
-          <div
-            style={{
-              background: "#ffffff",
-              borderRadius: 16,
-              padding: "10px 22px 2px",
-              boxShadow: "0 10px 26px -10px rgba(15,23,42,0.3)",
-            }}
-          >
-            <BGCLogo height={96} />
-          </div>
-        }
+        top={<BGCLogo height={104} />}
         caption="Member of Al Barami Group of Companies"
       />
     </AbsoluteFill>
@@ -248,16 +237,28 @@ export const Scene02About: React.FC = () => {
             kicker="End to end"
             title="The Full Project Lifecycle"
           />
+          {/* Bottom scrim so the chips read cleanly, clear of the engineers */}
           <div
             style={{
               position: "absolute",
-              top: 360,
-              left: 100,
-              right: 100,
+              bottom: 0,
+              left: 0,
+              right: 0,
+              height: 300,
+              background:
+                "linear-gradient(to top, rgba(11,18,36,0.82) 0%, rgba(11,18,36,0.4) 60%, transparent 100%)",
+            }}
+          />
+          <div
+            style={{
+              position: "absolute",
+              bottom: 96,
+              left: 120,
+              right: 120,
               display: "flex",
               flexWrap: "wrap",
               justifyContent: "center",
-              gap: 18,
+              gap: 16,
             }}
           >
             {LIFECYCLE.map((step, i) => (
@@ -266,10 +267,10 @@ export const Scene02About: React.FC = () => {
                   style={{
                     fontFamily: FONT,
                     fontWeight: 700,
-                    fontSize: 34,
+                    fontSize: 32,
                     color: "#ffffff",
                     background: COLORS.brandNavy,
-                    padding: "16px 34px",
+                    padding: "14px 30px",
                     borderRadius: 999,
                     whiteSpace: "nowrap",
                     boxShadow: "0 12px 28px -8px rgba(0,0,0,0.5)",
