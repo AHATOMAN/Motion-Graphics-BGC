@@ -4,7 +4,7 @@ import { SubtitleBar } from "../components/SubtitleBar";
 import { SUBTITLES } from "../data/subtitles";
 import { FadeUp } from "../components/anim";
 import { BannerText } from "../components/Card";
-import { FullScene, SceneTitle, Callout, Scrim } from "../components/FullScene";
+import { FullScene, SceneTitle, BottomLabels, Scrim } from "../components/FullScene";
 import { VoiceOver } from "../components/VoiceOver";
 
 export const SCENE_07_SECONDS = 14;
@@ -19,13 +19,19 @@ const CUT = 8.6; // narration reaches "assembly points" → cut outside
 export const Scene07Emergency: React.FC = () => {
   return (
     <AbsoluteFill>
-      {/* Shot 1 — corridor evacuation walk */}
+      {/* Shot 1 — corridor evacuation walk; labels below the equipment */}
       <Sequence durationInFrames={CUT * fps}>
         <FullScene clip="evacuation.mp4">
+          <Scrim strength={0.34} />
           <SceneTitle kicker="Be prepared" title="Emergency Procedures" />
-          <Callout x={1450} y={330} label="Emergency Exit" tone="positive" delay={1.5 * fps} />
-          <Callout x={40} y={430} label="Fire Extinguisher" tone="alert" delay={4.4 * fps} />
-          <Callout x={165} y={310} label="First-Aid Kit" tone="positive" delay={6 * fps} />
+          <BottomLabels
+            bottom={128}
+            items={[
+              { x: 230, label: "Fire Extinguisher", tone: "alert", delay: 4.4 * fps },
+              { x: 620, label: "First-Aid Kit", tone: "positive", delay: 6 * fps },
+              { x: 1500, label: "Emergency Exit", tone: "positive", delay: 1.5 * fps },
+            ]}
+          />
         </FullScene>
       </Sequence>
       {/* Shot 2 — assembly point headcount */}

@@ -3,7 +3,7 @@ import { SubtitleBar } from "../components/SubtitleBar";
 import { SUBTITLES } from "../data/subtitles";
 import { FadeUp } from "../components/anim";
 import { BannerText } from "../components/Card";
-import { FullScene, SceneTitle, Callout, Scrim } from "../components/FullScene";
+import { FullScene, SceneTitle, BottomLabels, Scrim } from "../components/FullScene";
 import { VoiceOver } from "../components/VoiceOver";
 
 export const SCENE_08_SECONDS = 13;
@@ -18,19 +18,17 @@ export const Scene08Hazards: React.FC = () => {
     <FullScene clip="hazards.mp4">
       <Scrim strength={0.42} />
       <SceneTitle kicker="Stay alert" title="Hazard Identification" light />
-      <Callout x={430} y={560} label="Slippery Floors" tone="alert" delay={1.5 * fps} />
-      <Callout x={1050} y={380} label="Moving Machinery" tone="alert" delay={2.6 * fps} />
-      <Callout x={1560} y={420} label="Electrical Wiring" tone="alert" delay={3.7 * fps} />
-      <div
-        style={{
-          position: "absolute",
-          bottom: 176,
-          left: 0,
-          right: 0,
-          display: "flex",
-          justifyContent: "center",
-        }}
-      >
+      {/* Hazard labels sit below each hazard, not on top of it */}
+      <BottomLabels
+        bottom={128}
+        items={[
+          { x: 430, label: "Slippery Floors", tone: "alert", delay: 1.5 * fps },
+          { x: 980, label: "Moving Machinery", tone: "alert", delay: 2.6 * fps },
+          { x: 1560, label: "Electrical Wiring", tone: "alert", delay: 3.7 * fps },
+        ]}
+      />
+      {/* Call-to-action banner under the title, clear of the machinery */}
+      <div style={{ position: "absolute", top: 258, left: 100 }}>
         <FadeUp delay={8.2 * fps}>
           <BannerText text="Report any hazards immediately to your supervisor." />
         </FadeUp>

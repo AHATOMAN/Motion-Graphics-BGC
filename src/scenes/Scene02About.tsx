@@ -1,9 +1,14 @@
 import React from "react";
-import { AbsoluteFill, Sequence } from "remotion";
+import {
+  AbsoluteFill,
+  interpolate,
+  Sequence,
+  useCurrentFrame,
+} from "remotion";
 import { COLORS, DISPLAY, FONT } from "../theme";
 import { SubtitleBar } from "../components/SubtitleBar";
 import { SUBTITLES } from "../data/subtitles";
-import { FadeUp } from "../components/anim";
+import { FadeUp, popIn } from "../components/anim";
 import { KineticText } from "../components/KineticText";
 import { FullScene, SceneTitle, Callout, Scrim } from "../components/FullScene";
 import { BGCLogo } from "../branding/BGCLogo";
@@ -17,45 +22,176 @@ const fps = 30;
 // Narration beats (forced alignment): sectors 0.8-10.8, history 11.5-20.7,
 // lifecycle 21.4-40.8, workforce 41.7-49, commitment 49.5-63.4
 const BEAT_HISTORY = 11.5;
+const BEAT_LIFECYCLE = 21.4;
 const BEAT_WORKFORCE = 41.7;
 const BEAT_COMMIT = 49.5;
 
-const Milestone: React.FC<{
-  at: number;
-  value: React.ReactNode;
-  caption: string;
-}> = ({ at, value, caption }) => (
-  <FadeUp delay={at * fps}>
-    <div style={{ display: "flex", alignItems: "center", gap: 26 }}>
+// A single node on the horizontal history timeline.
+const TimelineNode: React.FC<{
+  x: number;
+  at: number; // seconds into the timeline sub-sequence
+  top: React.ReactNode; // year or logo (above the track)
+  caption: string; // below the track
+}> = ({ x, at, top, caption }) => {
+  const frame = useCurrentFrame();
+  const { opacity, scale } = popIn(frame, fps, at * fps);
+  return (
+    <div
+      style={{
+        position: "absolute",
+        left: x,
+        top: 250,
+        width: 380,
+        marginLeft: -190,
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        opacity,
+        scale: String(scale),
+      }}
+    >
+      {/* Above the track: year / logo */}
       <div
         style={{
-          fontFamily: DISPLAY,
-          fontWeight: 800,
-          fontSize: 92,
-          letterSpacing: "-0.02em",
-          color: COLORS.brandRed,
-          minWidth: 300,
+          height: 190,
           display: "flex",
-          alignItems: "center",
+          alignItems: "flex-end",
+          justifyContent: "center",
         }}
       >
-        {value}
+        {top}
       </div>
+      {/* Node dot on the track */}
       <div
         style={{
+          width: 34,
+          height: 34,
+          borderRadius: "50%",
+          background: COLORS.brandRed,
+          border: "6px solid #ffffff",
+          boxShadow: "0 6px 16px rgba(15,23,42,0.28)",
+          margin: "18px 0",
+        }}
+      />
+      {/* Below the track: caption card */}
+      <div
+        style={{
+          background: "#ffffff",
+          borderRadius: 16,
+          border: `1.5px solid ${COLORS.paleBlue}`,
+          boxShadow: "0 16px 34px -16px rgba(15,23,42,0.25)",
+          padding: "16px 22px",
           fontFamily: FONT,
           fontWeight: 600,
-          fontSize: 34,
+          fontSize: 28,
           color: COLORS.text,
-          lineHeight: 1.25,
-          maxWidth: 560,
+          textAlign: "center",
+          lineHeight: 1.28,
+          maxWidth: 340,
         }}
       >
         {caption}
       </div>
     </div>
-  </FadeUp>
-);
+  );
+};
+
+// The horizontal history timeline (its own distinct scene).
+const HistoryTimeline: React.FC = () => {
+  const frame = useCurrentFrame();
+  // Track draws left -> right between the nodes
+  const draw = interpolate(frame, [0.2 * fps, 6.8 * fps], [0, 1], {
+    extrapolateLeft: "clamp",
+    extrapolateRight: "clamp",
+  });
+  const X1 = 300;
+  const X2 = 1620;
+  const trackY = 468;
+  return (
+    <AbsoluteFill>
+      <SceneTitle kicker="Our journey" title="Four Decades of Trust" />
+      {/* timeline track */}
+      <svg
+        viewBox="0 0 1920 1080"
+        width="1920"
+        height="1080"
+        style={{ position: "absolute", inset: 0 }}
+      >
+        <line
+          x1={X1}
+          y1={trackY}
+          x2={X2}
+          y2={trackY}
+          stroke={COLORS.paleBlue}
+          strokeWidth={6}
+          strokeLinecap="round"
+        />
+        <line
+          x1={X1}
+          y1={trackY}
+          x2={X1 + (X2 - X1) * draw}
+          y2={trackY}
+          stroke={COLORS.brandNavy}
+          strokeWidth={6}
+          strokeLinecap="round"
+        />
+      </svg>
+      <TimelineNode
+        x={560}
+        at={0.2}
+        top={
+          <div
+            style={{
+              fontFamily: DISPLAY,
+              fontWeight: 800,
+              fontSize: 104,
+              letterSpacing: "-0.02em",
+              color: COLORS.brandRed,
+            }}
+          >
+            1963
+          </div>
+        }
+        caption="Established in the Sultanate of Oman"
+      />
+      <TimelineNode
+        x={960}
+        at={2.3}
+        top={
+          <div
+            style={{
+              fontFamily: DISPLAY,
+              fontWeight: 800,
+              fontSize: 104,
+              letterSpacing: "-0.02em",
+              color: COLORS.brandRed,
+            }}
+          >
+            1976
+          </div>
+        }
+        caption="Became a 100% Omani company"
+      />
+      <TimelineNode
+        x={1360}
+        at={6.4}
+        top={
+          <div
+            style={{
+              background: "#ffffff",
+              borderRadius: 16,
+              padding: "10px 22px 2px",
+              boxShadow: "0 10px 26px -10px rgba(15,23,42,0.3)",
+            }}
+          >
+            <BGCLogo height={96} />
+          </div>
+        }
+        caption="Member of Al Barami Group of Companies"
+      />
+    </AbsoluteFill>
+  );
+};
 
 const LIFECYCLE = [
   "BOOT",
@@ -91,79 +227,60 @@ export const Scene02About: React.FC = () => {
         </FullScene>
       </Sequence>
 
-      {/* Beat 2 — history & lifecycle: office, then the control room */}
-      <Sequence from={BEAT_HISTORY * fps} durationInFrames={(26.5 - BEAT_HISTORY) * fps}>
-        <FullScene clip="office.mp4">
-          <Scrim from="left" strength={0.62} />
+      {/* Beat 2a — history as a horizontal animated timeline (its own scene) */}
+      <Sequence
+        from={BEAT_HISTORY * fps}
+        durationInFrames={(BEAT_LIFECYCLE - BEAT_HISTORY) * fps}
+      >
+        <FullScene>
+          <HistoryTimeline />
         </FullScene>
       </Sequence>
-      <Sequence from={26.5 * fps} durationInFrames={(BEAT_WORKFORCE - 26.5) * fps}>
-        <FullScene clip="controlroom.mp4">
-          <Scrim from="left" strength={0.62} />
-        </FullScene>
-      </Sequence>
-      <Sequence from={BEAT_HISTORY * fps} durationInFrames={(BEAT_WORKFORCE - BEAT_HISTORY) * fps}>
-        <AbsoluteFill>
+
+      {/* Beat 2b — full project lifecycle over the control room */}
+      <Sequence
+        from={BEAT_LIFECYCLE * fps}
+        durationInFrames={(BEAT_WORKFORCE - BEAT_LIFECYCLE) * fps}
+      >
+        <FullScene clip="controlroom.mp4" dim={0.34}>
+          <SceneTitle
+            light
+            kicker="End to end"
+            title="The Full Project Lifecycle"
+          />
           <div
             style={{
               position: "absolute",
-              top: 150,
+              top: 360,
               left: 100,
+              right: 100,
               display: "flex",
-              flexDirection: "column",
-              gap: 44,
+              flexWrap: "wrap",
+              justifyContent: "center",
+              gap: 18,
             }}
           >
-            <Milestone at={0.2} value="1963" caption="Established in the Sultanate of Oman" />
-            <Milestone at={2.3} value="1976" caption="Became a 100% Omani company" />
-            <Milestone
-              at={6.4}
-              value={
+            {LIFECYCLE.map((step, i) => (
+              <FadeUp key={step} delay={(1.2 + i * 1.4) * fps}>
                 <div
                   style={{
-                    background: "rgba(255,255,255,0.95)",
-                    borderRadius: 16,
-                    padding: "10px 20px 2px",
-                    boxShadow: "0 10px 26px -10px rgba(15,23,42,0.3)",
+                    fontFamily: FONT,
+                    fontWeight: 700,
+                    fontSize: 34,
+                    color: "#ffffff",
+                    background: COLORS.brandNavy,
+                    padding: "16px 34px",
+                    borderRadius: 999,
+                    whiteSpace: "nowrap",
+                    boxShadow: "0 12px 28px -8px rgba(0,0,0,0.5)",
                   }}
                 >
-                  <BGCLogo height={104} />
+                  {step}
                 </div>
-              }
-              caption="Member of Al Barami Group of Companies"
-            />
-            <FadeUp delay={9.9 * fps}>
-              <div
-                style={{
-                  display: "flex",
-                  flexWrap: "wrap",
-                  gap: 14,
-                  maxWidth: 900,
-                }}
-              >
-                {LIFECYCLE.map((step, i) => (
-                  <FadeUp key={step} delay={(10.2 + i * 1.1) * fps}>
-                    <div
-                      style={{
-                        fontFamily: FONT,
-                        fontWeight: 700,
-                        fontSize: 27,
-                        color: "#ffffff",
-                        background: COLORS.brandNavy,
-                        padding: "10px 26px",
-                        borderRadius: 999,
-                        whiteSpace: "nowrap",
-                        boxShadow: "0 10px 24px -8px rgba(15,23,42,0.4)",
-                      }}
-                    >
-                      {step}
-                    </div>
-                  </FadeUp>
-                ))}
-              </div>
-            </FadeUp>
+              </FadeUp>
+            ))}
           </div>
-        </AbsoluteFill>
+        </FullScene>
       </Sequence>
 
       {/* Beat 3 — workforce stat frame (reference layout) */}

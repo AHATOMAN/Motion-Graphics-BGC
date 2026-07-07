@@ -47,7 +47,7 @@ export const FullScene: React.FC<{
             }}
           />
         </Loop>
-      ) : (
+      ) : art ? (
         <Img
           src={staticFile(`art/${art}`)}
           style={{
@@ -60,6 +60,22 @@ export const FullScene: React.FC<{
             filter: blur > 0 ? `blur(${blur}px)` : undefined,
           }}
         />
+      ) : (
+        // Plain branded background (soft dot grid + brand glows)
+        <AbsoluteFill>
+          <AbsoluteFill
+            style={{
+              background: `linear-gradient(160deg, #FFFFFF 0%, ${COLORS.lightBg} 55%, #EAF0FA 100%)`,
+            }}
+          />
+          <AbsoluteFill
+            style={{
+              backgroundImage:
+                "radial-gradient(rgba(15,23,42,0.05) 2px, transparent 2px)",
+              backgroundSize: "56px 56px",
+            }}
+          />
+        </AbsoluteFill>
       )}
       {dim > 0 ? (
         <AbsoluteFill style={{ background: `rgba(11, 18, 36, ${dim})` }} />
@@ -218,6 +234,110 @@ export const Callout: React.FC<{
         </div>
       </FadeUp>
     </div>
+  );
+};
+
+// Labels pinned in the bottom band, each horizontally centered on its
+// subject's x position so it clearly refers to that subject — but low
+// enough to never cover a face. A short stem points up toward the subject.
+export const BottomLabels: React.FC<{
+  items: {
+    x: number; // horizontal center of the subject (1920-wide space)
+    label: string;
+    sub?: string;
+    tone?: "light" | "alert" | "positive";
+    delay?: number;
+  }[];
+  bottom?: number;
+}> = ({ items, bottom = 132 }) => (
+  <>
+    {items.map((it) => (
+      <div
+        key={it.label}
+        style={{
+          position: "absolute",
+          bottom,
+          left: it.x,
+          transform: "translateX(-50%)",
+        }}
+      >
+        <BottomChip {...it} />
+      </div>
+    ))}
+  </>
+);
+
+const BottomChip: React.FC<{
+  label: string;
+  sub?: string;
+  tone?: "light" | "alert" | "positive";
+  delay?: number;
+}> = ({ label, sub, tone = "light", delay = 0 }) => {
+  const bg =
+    tone === "alert"
+      ? COLORS.orange
+      : tone === "positive"
+        ? COLORS.green
+        : "rgba(255,255,255,0.96)";
+  const ink = tone === "light" ? COLORS.text : "#ffffff";
+  return (
+    <FadeUp delay={delay}>
+      <div
+        style={{ display: "flex", flexDirection: "column", alignItems: "center" }}
+      >
+        <div
+          style={{
+            background: bg,
+            borderRadius: 16,
+            padding: sub ? "12px 26px" : "12px 30px",
+            boxShadow: "0 16px 34px -14px rgba(15,23,42,0.4)",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            gap: 3,
+            maxWidth: 360,
+          }}
+        >
+          <div
+            style={{
+              fontFamily: DISPLAY,
+              fontWeight: 800,
+              fontSize: 31,
+              color: ink,
+              whiteSpace: "nowrap",
+            }}
+          >
+            {label}
+          </div>
+          {sub ? (
+            <div
+              style={{
+                fontFamily: FONT,
+                fontWeight: 600,
+                fontSize: 20,
+                color: tone === "light" ? COLORS.muted : "rgba(255,255,255,0.9)",
+                textAlign: "center",
+                lineHeight: 1.2,
+              }}
+            >
+              {sub}
+            </div>
+          ) : null}
+        </div>
+        {/* small stem pointing up toward the subject */}
+        <div
+          style={{
+            width: 0,
+            height: 0,
+            borderLeft: "10px solid transparent",
+            borderRight: "10px solid transparent",
+            borderBottom: `12px solid ${bg}`,
+            transform: "rotate(180deg)",
+            marginTop: -1,
+          }}
+        />
+      </div>
+    </FadeUp>
   );
 };
 
