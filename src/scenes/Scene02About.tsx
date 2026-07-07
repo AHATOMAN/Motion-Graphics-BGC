@@ -6,6 +6,7 @@ import { SUBTITLES } from "../data/subtitles";
 import { FadeUp } from "../components/anim";
 import { KineticText } from "../components/KineticText";
 import { FullScene, SceneTitle, Callout, Scrim } from "../components/FullScene";
+import { BGCLogo } from "../branding/BGCLogo";
 import { VoiceOver } from "../components/VoiceOver";
 
 export const SCENE_02_SECONDS = 65;
@@ -21,11 +22,11 @@ const BEAT_COMMIT = 49.5;
 
 const Milestone: React.FC<{
   at: number;
-  value: string;
+  value: React.ReactNode;
   caption: string;
 }> = ({ at, value, caption }) => (
   <FadeUp delay={at * fps}>
-    <div style={{ display: "flex", alignItems: "baseline", gap: 26 }}>
+    <div style={{ display: "flex", alignItems: "center", gap: 26 }}>
       <div
         style={{
           fontFamily: DISPLAY,
@@ -34,6 +35,8 @@ const Milestone: React.FC<{
           letterSpacing: "-0.02em",
           color: COLORS.brandRed,
           minWidth: 300,
+          display: "flex",
+          alignItems: "center",
         }}
       >
         {value}
@@ -113,7 +116,22 @@ export const Scene02About: React.FC = () => {
           >
             <Milestone at={0.2} value="1963" caption="Established in the Sultanate of Oman" />
             <Milestone at={2.3} value="1976" caption="Became a 100% Omani company" />
-            <Milestone at={6.4} value="BGC" caption="Member of Al Barami Group of Companies" />
+            <Milestone
+              at={6.4}
+              value={
+                <div
+                  style={{
+                    background: "rgba(255,255,255,0.95)",
+                    borderRadius: 16,
+                    padding: "10px 20px 2px",
+                    boxShadow: "0 10px 26px -10px rgba(15,23,42,0.3)",
+                  }}
+                >
+                  <BGCLogo height={104} />
+                </div>
+              }
+              caption="Member of Al Barami Group of Companies"
+            />
             <FadeUp delay={9.9 * fps}>
               <div
                 style={{
