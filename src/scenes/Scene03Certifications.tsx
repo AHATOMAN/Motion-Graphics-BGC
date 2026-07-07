@@ -46,7 +46,7 @@ export const Scene03Certifications: React.FC = () => {
   const fps = 30;
   const delays = [1.5, 7.3, 10.8, 14.3, 20.1];
   return (
-    <FullScene clip="office.mp4" blur={7} dim={0.42}>
+    <FullScene clip="certwall.mp4" dim={0.34}>
       <SceneTitle
         light
         kicker="Trusted & Accredited"

@@ -11,21 +11,34 @@ export const SCENE_04_SECONDS = 20;
 
 const chunks = SUBTITLES["scene-04"];
 
+// The four roles arriving at the facility gate (dedicated animated scene).
+// Labels sit in a clean row above the walking group.
+const ROLES = [
+  { label: "Visitor", x: 210 },
+  { label: "Contractor", x: 640 },
+  { label: "Industry Vendor", x: 1080 },
+  { label: "New Employee", x: 1510 },
+];
+
 export const Scene04Priority: React.FC = () => {
   const fps = 30;
   return (
-    <FullScene clip="office.mp4">
-      <Scrim strength={0.45} />
+    <FullScene clip="gate.mp4">
+      <Scrim strength={0.5} />
       <SceneTitle kicker="Our commitment to you" title="Safety Is Your Priority" />
-      {/* Role callouts pinned to the people in the scene */}
-      <Callout x={300} y={300} label="Visitor" delay={5.6 * fps} />
-      <Callout x={600} y={260} label="Industry Vendor" delay={6.5 * fps} />
-      <Callout x={1250} y={330} label="Contractor" delay={7.4 * fps} />
-      <Callout x={1520} y={640} label="New Employee" delay={8.3 * fps} />
+      {ROLES.map((role, i) => (
+        <Callout
+          key={role.label}
+          x={role.x}
+          y={330}
+          label={role.label}
+          delay={(5.6 + i * 0.9) * fps}
+        />
+      ))}
       <div
         style={{
           position: "absolute",
-          bottom: 176,
+          bottom: 150,
           left: 0,
           right: 0,
           display: "flex",

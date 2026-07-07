@@ -1,5 +1,5 @@
 import React from "react";
-import { AbsoluteFill } from "remotion";
+import { AbsoluteFill, Loop, OffthreadVideo, staticFile } from "remotion";
 import { COLORS, FONT } from "../theme";
 import { SubtitleBar } from "../components/SubtitleBar";
 import { SUBTITLES } from "../data/subtitles";
@@ -17,11 +17,25 @@ export const Scene13Credits: React.FC = () => {
   return (
     <AbsoluteFill
       style={{
-        background: `linear-gradient(160deg, ${COLORS.white} 0%, ${COLORS.lightBg} 60%, ${COLORS.paleBlue} 100%)`,
+        background: COLORS.lightBg,
         alignItems: "center",
         justifyContent: "center",
       }}
     >
+      {/* Animated landscape softly washed out behind the credits */}
+      <Loop durationInFrames={8 * 30}>
+        <OffthreadVideo
+          muted
+          src={staticFile("art/clips/landscape.mp4")}
+          style={{
+            position: "absolute",
+            width: "100%",
+            height: "100%",
+            objectFit: "cover",
+          }}
+        />
+      </Loop>
+      <AbsoluteFill style={{ background: "rgba(248, 250, 252, 0.82)" }} />
       <AbsoluteFill
         style={{
           alignItems: "center",

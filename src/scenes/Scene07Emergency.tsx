@@ -1,4 +1,5 @@
 import React from "react";
+import { AbsoluteFill, Sequence } from "remotion";
 import { SubtitleBar } from "../components/SubtitleBar";
 import { SUBTITLES } from "../data/subtitles";
 import { FadeUp } from "../components/anim";
@@ -12,22 +13,35 @@ const chunks = SUBTITLES["scene-07"].filter(
   (c) => !/in case of emergency/i.test(c.text),
 );
 
+const fps = 30;
+const CUT = 8.6; // narration reaches "assembly points" → cut outside
+
 export const Scene07Emergency: React.FC = () => {
-  const fps = 30;
   return (
-    <FullScene clip="evacuation.mp4">
-      <Scrim strength={0.4} />
-      <SceneTitle kicker="Be prepared" title="Emergency Procedures" />
-      <Callout x={1450} y={330} label="Emergency Exit" tone="positive" delay={1.5 * fps} />
-      <Callout x={40} y={430} label="Fire Extinguisher" tone="alert" delay={4.4 * fps} />
-      <Callout x={165} y={310} label="First-Aid Kit" tone="positive" delay={6 * fps} />
-      <div style={{ position: "absolute", top: 246, left: 90 }}>
-        <FadeUp delay={8.9 * fps}>
-          <BannerText text="In case of emergency, follow the evacuation plan." />
-        </FadeUp>
-      </div>
+    <AbsoluteFill>
+      {/* Shot 1 — corridor evacuation walk */}
+      <Sequence durationInFrames={CUT * fps}>
+        <FullScene clip="evacuation.mp4">
+          <SceneTitle kicker="Be prepared" title="Emergency Procedures" />
+          <Callout x={1450} y={330} label="Emergency Exit" tone="positive" delay={1.5 * fps} />
+          <Callout x={40} y={430} label="Fire Extinguisher" tone="alert" delay={4.4 * fps} />
+          <Callout x={165} y={310} label="First-Aid Kit" tone="positive" delay={6 * fps} />
+        </FullScene>
+      </Sequence>
+      {/* Shot 2 — assembly point headcount */}
+      <Sequence from={CUT * fps}>
+        <FullScene clip="assembly.mp4">
+          <Scrim strength={0.4} />
+          <SceneTitle kicker="Be prepared" title="Assembly Point" light />
+          <div style={{ position: "absolute", top: 262, left: 90 }}>
+            <FadeUp delay={0.4 * fps}>
+              <BannerText text="In case of emergency, follow the evacuation plan." />
+            </FadeUp>
+          </div>
+        </FullScene>
+      </Sequence>
       <VoiceOver file="scene-07.mp3" />
       <SubtitleBar chunks={chunks} />
-    </FullScene>
+    </AbsoluteFill>
   );
 };

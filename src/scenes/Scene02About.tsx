@@ -88,10 +88,19 @@ export const Scene02About: React.FC = () => {
         </FullScene>
       </Sequence>
 
-      {/* Beat 2 — history & lifecycle over the office */}
-      <Sequence from={BEAT_HISTORY * fps} durationInFrames={(BEAT_WORKFORCE - BEAT_HISTORY) * fps}>
+      {/* Beat 2 — history & lifecycle: office, then the control room */}
+      <Sequence from={BEAT_HISTORY * fps} durationInFrames={(26.5 - BEAT_HISTORY) * fps}>
         <FullScene clip="office.mp4">
           <Scrim from="left" strength={0.62} />
+        </FullScene>
+      </Sequence>
+      <Sequence from={26.5 * fps} durationInFrames={(BEAT_WORKFORCE - 26.5) * fps}>
+        <FullScene clip="controlroom.mp4">
+          <Scrim from="left" strength={0.62} />
+        </FullScene>
+      </Sequence>
+      <Sequence from={BEAT_HISTORY * fps} durationInFrames={(BEAT_WORKFORCE - BEAT_HISTORY) * fps}>
+        <AbsoluteFill>
           <div
             style={{
               position: "absolute",
@@ -136,7 +145,7 @@ export const Scene02About: React.FC = () => {
               </div>
             </FadeUp>
           </div>
-        </FullScene>
+        </AbsoluteFill>
       </Sequence>
 
       {/* Beat 3 — workforce stat frame (reference layout) */}

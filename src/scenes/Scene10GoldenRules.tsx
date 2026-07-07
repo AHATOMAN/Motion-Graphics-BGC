@@ -1,7 +1,12 @@
 import React from "react";
-import { interpolate, useCurrentFrame } from "remotion";
+import {
+  AbsoluteFill,
+  interpolate,
+  Sequence,
+  useCurrentFrame,
+} from "remotion";
 import { COLORS, FONT } from "../theme";
-import { SceneFrame } from "../components/SceneFrame";
+import { FullScene, SceneTitle } from "../components/FullScene";
 import { SubtitleBar } from "../components/SubtitleBar";
 import { RULE_TIMINGS, SUBTITLES } from "../data/subtitles";
 import { FadeUp } from "../components/anim";
@@ -119,14 +124,32 @@ const RuleCard: React.FC<{ index: number; title: string; desc: string }> = ({
   );
 };
 
+// Animated safety-scene backdrops cycle behind the rules grid.
+const BACKDROPS = ["harness.mp4", "welding.mp4", "traffic.mp4"];
+const BACKDROP_SECONDS = 33;
+
 export const Scene10GoldenRules: React.FC = () => {
   const fps = 30;
   return (
-    <SceneFrame
-      dark
-      kicker="Commitments that save lives"
-      title="The 12 Golden Life Saving Rules"
-    >
+    <AbsoluteFill style={{ background: COLORS.navyDark }}>
+      {/* Cycling animated backdrops, heavily dimmed under the grid */}
+      {BACKDROPS.map((clip, i) => (
+        <Sequence
+          key={clip}
+          from={i * BACKDROP_SECONDS * fps}
+          durationInFrames={BACKDROP_SECONDS * fps}
+        >
+          <FullScene clip={clip} dim={0.8}>
+            <AbsoluteFill
+              style={{
+                background:
+                  "linear-gradient(160deg, rgba(15,23,42,0.55) 0%, rgba(30,41,59,0.35) 100%)",
+              }}
+            />
+          </FullScene>
+        </Sequence>
+      ))}
+      <SceneTitleOverlay />
       <div
         style={{
           position: "absolute",
@@ -173,6 +196,15 @@ export const Scene10GoldenRules: React.FC = () => {
       </FadeUp>
       <VoiceOver file="scene-10.mp3" />
       <SubtitleBar chunks={chunks} />
-    </SceneFrame>
+    </AbsoluteFill>
   );
 };
+
+const SceneTitleOverlay: React.FC = () => (
+  <SceneTitle
+    light
+    kicker="Commitments that save lives"
+    title="The 12 Golden Life Saving Rules"
+    maxWidth={1400}
+  />
+);
